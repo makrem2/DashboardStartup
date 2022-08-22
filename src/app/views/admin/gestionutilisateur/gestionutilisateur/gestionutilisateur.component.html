@@ -1,0 +1,866 @@
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="content-page">
+  <!-- Start content -->
+  <div class="content">
+    <div class="container-fluid">
+      <div class="page-title-box">
+        <div class="row align-items-center">
+          <div class="col-sm-6">
+            <h4 class="page-title">Liste des Utilisateurs</h4>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-right">
+              <li class="breadcrumb-item">
+                <a href="javascript:void(0);">IcStartup</a>
+              </li>
+              <li class="breadcrumb-item">
+                <a href="javascript:void(0);">Liste</a>
+              </li>
+              <li class="breadcrumb-item active">Liste des Utilisateurs</li>
+            </ol>
+          </div>
+        </div>
+        <!-- end row -->
+      </div>
+      <!-- end page-title -->
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card m-b-30">
+            <div class="card-body">
+              <h4 class="mt-0 header-title">Recherche :</h4>
+              <div class="form-group row">
+                <div class="col-sm-10">
+                  <input
+                    class="form-control"
+                    type="search"
+                    id="example-search-input"
+                    [(ngModel)]="searchText"
+                    placeholder="Search Bar "
+                  />
+                </div>
+                <button
+                  type="button"
+                  class="btn btn-primary waves-effect waves-light"
+                  data-toggle="modal"
+                  data-target=".bs-example-modal-lg"
+                  (click)="RestMessage()"
+                >
+                  Ajouter Utilisateur
+                </button>
+              </div>
+              <table
+                id="datatable"
+                class="table table-bordered dt-responsive nowrap"
+                style="
+                  border-collapse: collapse;
+                  border-spacing: 0;
+                  width: 100%;
+                "
+              >
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Nom d'utilisateur</th>
+                    <th>Email</th>
+                    <th>Region</th>
+                    <th>Téléphone</th>
+                    <th>Date de Naissance</th>
+                    <th>Image</th>
+                    <th>Role de l'utilisateur</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="
+                      let item of DataFormateur
+                        | filter: searchText
+                        | paginate: { itemsPerPage: 10, currentPage: p }
+                    "
+                  >
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.nom }}</td>
+                    <td>{{ item.prenom }}</td>
+                    <td>{{ item.username }}</td>
+                    <td>{{ item.email }}</td>
+                    <td>{{ item.region }}</td>
+                    <td>{{ item.tel }}</td>
+                    <td>{{ item.date_naic }}</td>
+                    <td>
+                      <img
+                        src="data:image/png;base64,{{ item.photo }}"
+                        style="height: 50px; width: fil-content"
+                        alt=""
+                      />
+                    </td>
+                    <td *ngFor="let role of item.roles">{{ role.name }}</td>
+                    <td>
+                      <button
+                        type="button"
+                        data-toggle="modal"
+                        data-target="#deleteModal"
+                        class="btn btn-danger waves-effect waves-light"
+                        (click)="GetIdUserToDelete(item.id)"
+                      >
+                        <i class="far fa-trash-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <pagination-controls
+                (pageChange)="p = $event"
+              ></pagination-controls>
+            </div>
+          </div>
+        </div>
+        <!-- end col -->
+      </div>
+      <!-- end row -->
+    </div>
+    <!-- container-fluid -->
+  </div>
+  <!-- content -->
+
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="deleteModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          êtes-vous sûr de vouloir supprimer cet utilisateur
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            data-dismiss="modal"
+            class="btn btn-outline-secondary waves-effect"
+          >
+            Annuler
+          </button>
+          <button
+            type="button"
+            (click)="DeleteUser()"
+            data-dismiss="modal"
+            class="btn btn-outline-danger waves-effect waves-light"
+          >
+            Supprimer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ============================================================== -->
+<!-- End Right content here -->
+<!-- ============================================================== -->
+
+<!--  Modal content for the above example -->
+<div
+  class="modal fade bs-example-modal-lg"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myLargeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title mt-0" id="myLargeModalLabel">
+          Gestion Utilisateur
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-12">
+              <div class="card m-b-30">
+                <div class="card-body">
+                  <!-- Nav tabs -->
+                  <ul class="nav nav-pills nav-justified" role="tablist">
+                    <li class="nav-item waves-effect waves-light">
+                      <a
+                        class="nav-link active"
+                        data-toggle="tab"
+                        href="#home-1"
+                        role="tab"
+                      >
+                        <span class="d-none d-md-block" (click)="RestMessage()"
+                          >Ajouter Admin</span
+                        ><span class="d-block d-md-none"
+                          ><i class="mdi mdi-home-variant h5"></i
+                        ></span>
+                      </a>
+                    </li>
+                    <li class="nav-item waves-effect waves-light">
+                      <a
+                        class="nav-link"
+                        data-toggle="tab"
+                        href="#profile-1"
+                        role="tab"
+                      >
+                        <span class="d-none d-md-block" (click)="RestMessage()"
+                          >Ajouter Formateur</span
+                        ><span class="d-block d-md-none"
+                          ><i class="mdi mdi-account h5"></i
+                        ></span>
+                      </a>
+                    </li>
+                    <li class="nav-item waves-effect waves-light">
+                      <a
+                        class="nav-link"
+                        data-toggle="tab"
+                        href="#messages-1"
+                        role="tab"
+                      >
+                        <span class="d-none d-md-block" (click)="RestMessage()"
+                          >Ajouter Etudiant</span
+                        ><span class="d-block d-md-none"
+                          ><i class="mdi mdi-email h5"></i
+                        ></span>
+                      </a>
+                    </li>
+                  </ul>
+
+                  <!-- Tab panes -->
+                  <div class="tab-content">
+                    <div
+                      class="tab-pane active p-3"
+                      id="home-1"
+                      role="tabpanel"
+                    >
+                      <h4 class="mt-0 header-title">Ajouter Admin</h4>
+                      <br />
+                      <form
+                        #admin="ngForm"
+                        (ngSubmit)="addAdmin(admin); admin.resetForm()"
+                      >
+                        <div class="form-group">
+                          <label for="Nomadmin">Nom</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Nomadmin"
+                            placeholder="Jerbi"
+                            required
+                            name="nom"
+                            #nom="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="nom.errors?.required && nom.touched"
+                        >
+                          Nom est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="Prenomadmin">Prénom</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Prenomadmin"
+                            placeholder="Amine"
+                            required
+                            name="prenom"
+                            #prenom="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="prenom.errors?.required && prenom.touched"
+                        >
+                          Prénom est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="usernameadmin">Nom d'utilisateur</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="usernameadmin"
+                            placeholder="Nom d'utilisateur"
+                            required
+                            name="username"
+                            #username="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="username.errors?.required && username.touched"
+                        >
+                          Nom d'utilisateur est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="emailadmin">Email</label>
+                          <input
+                            type="email"
+                            class="form-control"
+                            id="emailadmin"
+                            placeholder="name@example.com"
+                            required
+                            name="email"
+                            #email="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="email.errors?.required && email.touched"
+                        >
+                          Email est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="passwordadmin">Mot de passe</label>
+                          <input
+                            type="password"
+                            class="form-control"
+                            id="passwordadmin"
+                            required
+                            name="password"
+                            #password="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="password.errors?.required && password.touched"
+                        >
+                          Mot de passe est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="regionadmin">Region</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="regionadmin"
+                            placeholder="Béja"
+                            required
+                            name="region"
+                            #region="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="region.errors?.required && region.touched"
+                        >
+                          Region est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="Téléphoneadmin">Téléphone</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Téléphoneadmin"
+                            placeholder="+216 58 745 369"
+                            required
+                            name="tel"
+                            #tel="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="tel.errors?.required && tel.touched"
+                        >
+                          Téléphone est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="date_naicadmin">Date de naissance</label>
+                          <input
+                            class="form-control"
+                            type="datetime-local"
+                            value="2011-08-19T13:45:00"
+                            id="date_naicadmin"
+                            required
+                            name="date_naic"
+                            #date_naic="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="
+                            date_naic.errors?.required && date_naic.touched
+                          "
+                        >
+                          Date de naissance est obligatoire
+                        </div>
+                        <button
+                          class="btn btn-success"
+                          [disabled]="admin.invalid"
+                        >
+                          Add Admin
+                        </button>
+                      </form>
+                    </div>
+
+                    <!-- ************************************************************************ -->
+                    <!-- ************************************************************************ -->
+                    <!-- ************************************************************************ -->
+                    <!-- ************************************************************************ -->
+                    <!-- ************************************************************************ -->
+                    <!-- ************************************************************************ -->
+
+                    <div class="tab-pane p-3" id="profile-1" role="tabpanel">
+                      <h4 class="mt-0 header-title">Ajouter Formateur</h4>
+                      <br />
+                      <form
+                        #formateur="ngForm"
+                        (ngSubmit)="
+                          addFormateur(formateur); formateur.resetForm()
+                        "
+                      >
+                        <div class="form-group">
+                          <label for="Nomformateur">Nom</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Nomformateur"
+                            placeholder="Jerbi"
+                            required
+                            name="nom"
+                            #nom="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="nom.errors?.required && nom.touched"
+                        >
+                          Nom est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="Prenomformateur">Prenom</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Prenomformateur"
+                            placeholder="Amine"
+                            required
+                            name="prenom"
+                            #prenom="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="prenom.errors?.required && prenom.touched"
+                        >
+                          Prenom est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="usernameformateur"
+                            >Nom d'utilisateur</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="usernameformateur"
+                            placeholder="amine2"
+                            required
+                            name="username"
+                            #username="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="username.errors?.required && username.touched"
+                        >
+                          Nom d'utilisateur est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="emailformateur">Email</label>
+                          <input
+                            type="email"
+                            class="form-control"
+                            id="emailformateur"
+                            placeholder="name@example.com"
+                            required
+                            name="email"
+                            #email="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="email.errors?.required && email.touched"
+                        >
+                          Email est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="passwordformateur">Mot de passe</label>
+                          <input
+                            type="password"
+                            class="form-control"
+                            id="passwordformateur"
+                            required
+                            name="password"
+                            #password="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="password.errors?.required && password.touched"
+                        >
+                          Mot de passe est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="regionformateur">Region</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="regionformateur"
+                            placeholder="Béja"
+                            required
+                            name="region"
+                            #region="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="region.errors?.required && region.touched"
+                        >
+                          Region est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="Téléphoneformateur">Téléphone</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Téléphoneformateur"
+                            placeholder="+216 58 745 369"
+                            required
+                            name="tel"
+                            #tel="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="tel.errors?.required && tel.touched"
+                        >
+                          Téléphone est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="date_naicformateur">Date Naissance</label>
+                          <input
+                            class="form-control"
+                            type="datetime-local"
+                            value="2011-08-19T13:45:00"
+                            id="date_naicformateur"
+                            required
+                            name="date_naic"
+                            #date_naic="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="
+                            date_naic.errors?.required && date_naic.touched
+                          "
+                        >
+                          Date Naissance est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleFormControlInput1"
+                            >Specialite</label
+                          >
+                          <select
+                            class="browser-default custom-select"
+                            id="specialite"
+                            name="specialite"
+                            #specialite="ngModel"
+                            ngModel
+                          >
+                            <option selected [ngValue]="null" disabled>
+                              Choisissez une spécialité
+                            </option>
+                            <option
+                              *ngFor="let item of DataFormationCategorie"
+                              value="{{ item.name }}"
+                            >
+                              {{ item.name }}
+                            </option>
+                          </select>
+                          <div
+                            class="alert alert-danger"
+                            *ngIf="
+                              specialite.errors?.required && specialite.touched
+                            "
+                          >
+                            spécialité est obligatoire
+                          </div>
+                        </div>
+                        <button
+                          class="btn btn-success"
+                          [disabled]="formateur.invalid"
+                        >
+                          Add Formateur
+                        </button>
+
+                      </form>
+                    </div>
+
+                    <!-- ************************************************************************ -->
+                    <!-- ************************************************************************ -->
+                    <!-- ************************************************************************ -->
+                    <!-- ************************************************************************ -->
+                    <!-- ************************************************************************ -->
+                    <!-- ************************************************************************ -->
+
+                    <div class="tab-pane p-3" id="messages-1" role="tabpanel">
+                      <h4 class="mt-0 header-title">Ajouter Etudiant</h4>
+                      <br />
+                      <form
+                        #etudiant="ngForm"
+                        (ngSubmit)="addEtudiant(etudiant); etudiant.resetForm()"
+                      >
+                        <div class="form-group">
+                          <label for="Nometudiant">Nom</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Nometudiant"
+                            placeholder="Jerbi"
+                            required
+                            name="nom"
+                            #nom="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="nom.errors?.required && nom.touched"
+                        >
+                          Nom est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="Prenometudiant">Prenom</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Prenometudiant"
+                            placeholder="Amine"
+                            required
+                            name="prenom"
+                            #prenom="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="prenom.errors?.required && prenom.touched"
+                        >
+                          Prenom est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="usernameetudiant"
+                            >Nom d'utilisateur</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="usernameetudiant"
+                            placeholder="amine2"
+                            required
+                            name="username"
+                            #username="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="username.errors?.required && username.touched"
+                        >
+                          Nom d'utilisateur est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="emailetudiant">Email</label>
+                          <input
+                            type="email"
+                            class="form-control"
+                            id="emailetudiant"
+                            placeholder="name@example.com"
+                            required
+                            name="email"
+                            #email="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="email.errors?.required && email.touched"
+                        >
+                          Email est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="passwordetudiant">Mot de passe</label>
+                          <input
+                            type="password"
+                            class="form-control"
+                            id="passwordetudiant"
+                            required
+                            name="password"
+                            #password="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="password.errors?.required && password.touched"
+                        >
+                          Mot de passe est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="regionetudiant">Region</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="regionetudiant"
+                            placeholder="Béja"
+                            required
+                            name="region"
+                            #region="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="region.errors?.required && region.touched"
+                        >
+                          Region est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="Téléphoneetudiant">Téléphone</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Téléphoneetudiant"
+                            placeholder="+216 58 745 369"
+                            required
+                            name="tel"
+                            #tel="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="tel.errors?.required && tel.touched"
+                        >
+                          Téléphone est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="date_naicetudiant">Date Naissance</label>
+                          <input
+                            class="form-control"
+                            type="datetime-local"
+                            value="2011-08-19T13:45:00"
+                            id="date_naicetudiant"
+                            required
+                            name="date_naic"
+                            #date_naic="ngModel"
+                            ngModel
+                          />
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="
+                            date_naic.errors?.required && date_naic.touched
+                          "
+                        >
+                        Date de naissance est obligatoire
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleFormControlInput1"
+                            >Niveau Etude</label
+                          >
+                          <select
+                            class="browser-default custom-select"
+                            id="niveauetude"
+                            name="niveauetude"
+                            #niveauetude="ngModel"
+                            ngModel
+                          >
+                            <option
+                              [selected]="true"
+                              [ngValue]="null"
+                              [disabled]="true"
+                            >
+                            Choisir niveau scolaire
+                            </option>
+                            <option value="niveau scolaire">
+                              niveau scolaire
+                            </option>
+                            <option value="Baccalauréat">Baccalauréat</option>
+                            <option value="Licence">Licence</option>
+                            <option value="Maîtrise">Maîtrise</option>
+                            <option value="Doctorat">Doctorat</option>
+                          </select>
+                          <div
+                            class="alert alert-danger"
+                            *ngIf="
+                              niveauetude.errors?.required &&
+                              niveauetude.touched
+                            "
+                          >
+                            Niveau Etude est obligatoire
+                          </div>
+                        </div>
+                        <button
+                          class="btn btn-success"
+                          [disabled]="etudiant.invalid"
+                        >
+                          Add Etudiant
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

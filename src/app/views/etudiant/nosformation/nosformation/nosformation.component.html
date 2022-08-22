@@ -1,0 +1,71 @@
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="content-page">
+    <!-- Start content -->
+    <div class="content">
+      <div class="container-fluid">
+        <div class="page-title-box">
+          <div class="row align-items-center">
+            <div class="col-sm-6">
+              <h4 class="page-title">Notre Formations</h4>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-right">
+                <li class="breadcrumb-item">
+                  <a href="javascript:void(0);">Home</a>
+                </li>
+                <li class="breadcrumb-item active">Notre Formations</li>
+              </ol>
+            </div>
+          </div>
+          <!-- end row -->
+        </div>
+        <!-- end page-title -->
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+
+<section>
+<div class="container">
+    <div class="text-center mb-5">
+        <h2 class="display-20 display-md-18 display-lg-16">Notre Formations</h2>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-md-6"
+        *ngFor="let item of ListFormation">
+            <article class="card card-style2">
+                <div class="card-img">
+                    <img class="rounded-top" src="data:image/png;base64,{{item.image}}"
+                    height="300px" width="350px" alt="...">
+                    <div class="date"><span>{{item.date_creation|date:'dd'}}</span>
+                        {{item.date_creation|date:'MM'}}</div>
+                </div>
+                <div class="card-body">
+                    <h3 class="h5"><a routerLink="nosformations">{{item.titre}}</a></h3>
+                    <p class="display-30">{{ (item.description.length>250)? (item.description | slice:0:240)+'..':(item.description) }}</p>
+                    <br>
+                    <br>
+                    <!-- <a routerLink="nosformations" class="read-more">Lire la suite</a> -->
+                </div>
+                <div class="card-footer">
+                    <ul>
+                        <!-- <li><a href="#!"><i class="mdi mdi-chevron-down-circle"></i>{{item.formationscategorie.name}}</a></li> -->
+                        <li><a (click)="AddFavorite(item.id)"><i class="mdi mdi-cards-heart"></i><span>Ajouter</span></a></li>
+                    </ul>
+                </div>
+            </article>
+        </div>
+    </div>
+</div>
+</section>
+  
+        <!-- END ROW -->
+      </div>
+      <!-- container-fluid -->
+    </div>
+    <!-- content -->
+  </div>
+  <!-- ============================================================== -->
+  <!-- End Right content here -->
+  <!-- ============================================================== -->
+  

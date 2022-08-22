@@ -1,0 +1,1291 @@
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="content-page">
+  <!-- Start content -->
+  <div class="content">
+    <div class="container-fluid">
+      <div class="page-title-box">
+        <div class="row align-items-center">
+          <div class="col-sm-6">
+            <h4 class="page-title">Tableau de bord</h4>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-right">
+              <li class="breadcrumb-item">
+                <a href="javascript:void(0);">Tableau de bord</a>
+              </li>
+              <li class="breadcrumb-item active">Cours</li>
+            </ol>
+          </div>
+        </div>
+        <!-- end row -->
+      </div>
+      <!-- end page-title -->
+      <div class="row">
+        <div class="col-12">
+          <div class="card m-b-30">
+            <div class="card-body">
+              <div class="form-group row">
+                <div class="col-sm-10">
+                  <input
+                    class="form-control"
+                    type="search"
+                    [(ngModel)]="searchText"
+                    id="example-search-input"
+                    placeholder="Barre de recherche "
+                  />
+                </div>
+                <button
+                  type="button"
+                  class="btn btn-primary waves-effect waves-light"
+                  data-toggle="modal"
+                  data-target=".AjouterChapiter"
+                  (click)="RestMessage()"
+                >
+                  Ajouter Section
+                </button>
+              </div>
+              <br />
+              <br />
+              <div id="accordion">
+                <div
+                  class="card mb-0"
+                  *ngFor="
+                    let item of ListCourse
+                      | filter: searchText
+                      | paginate: { itemsPerPage: 4, currentPage: p }
+                  "
+                >
+                  <div class="card-header" id="headingOne">
+                    <h5 class="mb-0 mt-0 font-14">
+                      <a
+                        data-toggle="collapse"
+                        aria-expanded="true"
+                        aria-controls="collapseOne"
+                        class="text-dark"
+                        style="font-size: 35px; text-align: center"
+                      >
+                        {{ item?.chapitername }}
+                      </a>
+
+                      <!-- <button
+                        (click)="GetChapiterId(item.id)"
+                        data-toggle="modal"
+                        data-target=".AjouterCours"
+                        style="float: right"
+                        (click)="RestMessage()"
+                        type="button"
+                        class="btn btn-primary btn-sm waves-effect waves-light"
+                        data-placement="bottom"
+                        title="Ajouter Cours"
+                      >
+                        <i class="mdi mdi-file-upload-outline">Ajouter Cours</i>
+                      </button>
+
+                      <button
+                        (click)="GetChapiterId(item.id)"
+                        data-toggle="modal"
+                        data-target=".UploadDevoir"
+                        style="float: right"
+                        (click)="RestMessage()"
+                        type="button"
+                        class="btn btn-info btn-sm waves-effect waves-light"
+                        data-placement="bottom"
+                        title="Upload Devoir"
+                      >
+                        <i class="mdi mdi-file-upload">Upload Devoir</i>
+                      </button>
+
+                      <button
+                      (click)="GetChapiterId(item.id)"
+                      data-toggle="modal"
+                      data-target=".UploadDevoir"
+                      style="float: right"
+                      (click)="RestMessage()"
+                      type="button"
+                      class="btn btn-primary btn-sm waves-effect waves-light"
+                      data-placement="bottom"
+                      title="Upload Devoir"
+                    >
+                      <i class="mdi mdi-file-upload">Upload Devoir</i>
+                    </button> -->
+
+                      <button
+                        type="button"
+                        style="float: right"
+                        class="btn btn-outline-primary waves-effect waves-light"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      >
+                        <i class="fas fa-ellipsis-v"></i>
+                      </button>
+                      <div class="dropdown-menu">
+                        <a
+                          class="dropdown-item"
+                          (click)="GetChapiterId(item.id)"
+                          data-toggle="modal"
+                          data-target=".AjouterCours"
+                          (click)="RestMessage()"
+                          >Ajouter Cours</a
+                        >
+                        <div class="dropdown-divider"></div>
+                        <a
+                          class="dropdown-item"
+                          (click)="GetChapiterId(item.id)"
+                          data-toggle="modal"
+                          data-target=".UploadDevoir"
+                          (click)="RestMessage()"
+                          >Ajouter Devoir</a
+                        >
+                        <div class="dropdown-divider"></div>
+                        <a
+                          class="dropdown-item"
+                          (click)="GetChapiterId(item.id)"
+                          data-toggle="modal"
+                          data-target=".AjouterQuiz"
+                          (click)="RestMessage()"
+                          >Ajouter Quiz</a
+                        >
+                        <div class="dropdown-divider"></div>
+                        <a
+                          class="dropdown-item"
+                          (click)="
+                            GetChapiterData(
+                              item.id,
+                              item.chapitername,
+                              item.description
+                            )
+                          "
+                          data-toggle="modal"
+                          data-target=".ModifierSection"
+                          (click)="RestMessage()"
+                          >Modifier Section</a
+                        >
+                        <div class="dropdown-divider"></div>
+                        <a
+                          class="dropdown-item"
+                          (click)="GetChapiterId(item.id)"
+                          data-toggle="modal"
+                          data-target="#SupprimerSection"
+                          (click)="RestMessage()"
+                          >Supprimer Section</a
+                        >
+                      </div>
+                    </h5>
+                  </div>
+
+                  <div class="collapse show" aria-labelledby="headingOne">
+                    <br />
+                    <div class="container">
+                      <div
+                        class="card mb-3"
+                        *ngFor="let itemCourse of item.courses"
+                      >
+                        <div class="card-body">
+                          <div class="d-flex flex-column flex-lg-row">
+                            <span
+                              class="avatar avatar-text rounded-3 me-4 bg-primary mb-2"
+                            >
+                              <i class="mdi mdi-notebook-multiple"></i>
+                            </span>
+                            <div class="row flex-fill">
+                              <div class="col-sm-5">
+                                <a
+                                  data-toggle="collapse"
+                                  data-parent="#accordion"
+                                  aria-expanded="true"
+                                  [attr.data-target]="
+                                    '#test' + itemCourse.courseid
+                                  "
+                                  aria-controls="collapseOne"
+                                  class="text-dark"
+                                >
+                                  <h4 class="h5">{{ itemCourse.title }}</h4>
+                                </a>
+                                <span class="badge badge-success">
+                                  Posté {{ item.date_creation }}
+                                </span>
+                              </div>
+                              <div class="col-sm-4 py-2">
+                                <a
+                                  (click)="
+                                    GetPdfFile(itemCourse.data, itemCourse.type)
+                                  "
+                                  style="color: aliceblue"
+                                  type="button"
+                                  class="btn btn-primary stretched-link"
+                                  data-toggle="modal"
+                                  >Voir</a
+                                >
+                              </div>
+                              <div class="col-sm-3 text-lg-end">
+                                <button
+                                  type="button"
+                                  style="float: right"
+                                  class="btn btn-outline-primary waves-effect waves-light"
+                                  data-toggle="dropdown"
+                                  aria-haspopup="true"
+                                  aria-expanded="false"
+                                >
+                                  <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                  <a
+                                    class="dropdown-item"
+                                    (click)="
+                                      GetCoursData(
+                                        itemCourse.courseid,
+                                        itemCourse.title,
+                                        itemCourse.description,
+                                        itemCourse.vedioLink
+                                      )
+                                    "
+                                    data-toggle="modal"
+                                    data-target=".ModifierCourse"
+                                    (click)="RestMessage()"
+                                    >Modifier Cours</a
+                                  >
+                                  <div class="dropdown-divider"></div>
+                                  <a
+                                    class="dropdown-item"
+                                    (click)="
+                                      GetCoursData(
+                                        itemCourse.courseid,
+                                        itemCourse.title,
+                                        itemCourse.description,
+                                        itemCourse.vedioLink
+                                      )
+                                    "
+                                    data-toggle="modal"
+                                    data-target="#SupprimerCourse"
+                                    (click)="RestMessage()"
+                                    >Supprimer Cours</a
+                                  >
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          id="test{{ itemCourse.courseid }}"
+                          class="collapse"
+                          aria-labelledby="headingOne"
+                        >
+                          <div class="card-body">
+                            {{ itemCourse.description }}
+                            <br />
+                            <br />
+                            <youtube-player
+                              videoId="{{ itemCourse.vedioLink }}"
+                              suggestedQuality="highres"
+                              [height]="450"
+                              [width]="900"
+                              [startSeconds]="4"
+                              [endSeconds]="300"
+                            >
+                            </youtube-player>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br />
+                  </div>
+                  <div class="collapse show" aria-labelledby="headingOne">
+                    <br />
+                    <div class="container">
+                      <div
+                        class="card mb-3"
+                        *ngFor="let itemDevoir of item.devoirs"
+                      >
+                        <div class="card-body">
+                          <div class="d-flex flex-column flex-lg-row">
+                            <span
+                              class="avatar avatar-text rounded-3 me-4 bg-primary mb-2"
+                            >
+                              <i class="mdi mdi-calendar-question"></i>
+                            </span>
+                            <div class="row flex-fill">
+                              <div class="col-sm-5">
+                                <a
+                                  data-toggle="collapse"
+                                  data-parent="#accordion"
+                                  aria-expanded="true"
+                                  [attr.data-target]="
+                                    '#test' + itemDevoir.devoirid
+                                  "
+                                  aria-controls="collapseOne"
+                                  class="text-dark"
+                                >
+                                  <h4 class="h5">{{ itemDevoir.title }}</h4>
+                                </a>
+                                <span class="badge badge-success"
+                                  >Posté {{ item.date_creation }}</span
+                                >
+                              </div>
+                              <div class="col-sm-4 py-2">
+                                <a
+                                  (click)="
+                                    GetPdfFile(itemDevoir.data, itemDevoir.type)
+                                  "
+                                  style="color: aliceblue"
+                                  type="button"
+                                  class="btn btn-primary stretched-link"
+                                  data-toggle="modal"
+                                  >Voir</a
+                                >
+                              </div>
+                              <div class="col-sm-3 text-lg-end">
+                                <button
+                                  type="button"
+                                  style="float: right"
+                                  class="btn btn-outline-primary waves-effect waves-light"
+                                  data-toggle="dropdown"
+                                  aria-haspopup="true"
+                                  aria-expanded="false"
+                                >
+                                  <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                  <!-- <a
+                                    class="dropdown-item"
+                                    (click)="
+                                      GetDevoirData(
+                                        itemDevoir.devoirid,
+                                        itemDevoir.title,
+                                        itemDevoir.description
+                                      )
+                                    "
+                                    data-toggle="modal"
+                                    data-target=".ModifierSection"
+                                    (click)="RestMessage()"
+                                    >Modifier Devoir</a
+                                  >
+                                  <div class="dropdown-divider"></div> -->
+                                  <a
+                                    class="dropdown-item"
+                                    (click)="
+                                      GetDevoirData(
+                                        itemDevoir.devoirid,
+                                        itemDevoir.title,
+                                        itemDevoir.description
+                                      )
+                                    "
+                                    data-toggle="modal"
+                                    data-target="#SupprimerDevoir"
+                                    (click)="RestMessage()"
+                                    >Supprimer Devoir</a
+                                  >
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          id="test{{ itemDevoir.devoirid }}"
+                          class="collapse"
+                          aria-labelledby="headingOne"
+                        >
+                          <div class="card-body">
+                            {{ itemDevoir.description }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br />
+                  </div>
+                </div>
+                <pagination-controls
+                  (pageChange)="p = $event"
+                ></pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--*********************************************Ajouter Chapiter******************************************-->
+
+<div
+  class="modal fade AjouterChapiter"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myLargeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title mt-0" id="myLargeModalLabel">Ajouter Section</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="RestMessage()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #ACH="ngForm" (ngSubmit)="AjouterChapiter(ACH); ACH.resetForm()">
+          <div class="form-group row">
+            <label for="example-text-input" class="col-sm-2 col-form-label"
+              >Nom Section</label
+            >
+            <div class="col-sm-10">
+              <input
+                class="form-control"
+                type="text"
+                placeholder="Nom Section"
+                value="Artisanal kale"
+                id="example-text-input"
+                name="chapitername"
+                [required]="true"
+                #chapitername="ngModel"
+                ngModel
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-text-input" class="col-sm-2 col-form-label"
+              >Description</label
+            >
+            <div class="col-sm-10">
+              <textarea
+                required
+                class="form-control"
+                rows="5"
+                name="title"
+                placeholder="Section Description"
+                [required]="true"
+                #title="ngModel"
+                ngModel
+              ></textarea>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Formation Name</label>
+            <div class="col-sm-10">
+              <select
+                class="form-control"
+                id="idFormation"
+                required
+                name="idFormation"
+                #idFormation="ngModel"
+                ngModel
+              >
+                <option [selected]="true" [ngValue]="null" disabled>
+                  ---Select---
+                </option>
+                <option
+                  *ngFor="let item of ListFormation"
+                  value="{{ item.id }}"
+                >
+                  {{ item.titre }}
+                </option>
+              </select>
+            </div>
+          </div>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button
+            type="button"
+            style="float: right"
+            data-dismiss="modal"
+            aria-label="Close"
+            class="btn btn-danger waves-effect waves-light"
+            (click)="RestMessage()"
+          >
+            Annuler
+          </button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button
+            style="float: right"
+            [disabled]="ACH.invalid"
+            class="btn btn-success waves-effect waves-light"
+          >
+            Ajouter Section
+          </button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </form>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!--*********************************************Ajouter Cours******************************************-->
+
+<!--  Modal content for the above example -->
+<div
+  class="modal fade AjouterCours"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myLargeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title mt-0" id="myLargeModalLabel">Ajouter Cours</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #AC="ngForm" (ngSubmit)="AjouterCours(AC); AC.resetForm()">
+          <div class="form-group row">
+            <label for="example-text-input28" class="col-sm-2 col-form-label"
+              >Titre</label
+            >
+            <div class="col-sm-10">
+              <input
+                class="form-control"
+                type="text"
+                value="Artisanal kale"
+                id="example-text-input28"
+                name="title"
+                [required]="true"
+                #title="ngModel"
+                ngModel
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-text-input" class="col-sm-2 col-form-label"
+              >Cours Pdf</label
+            >
+            <div class="col-sm-10">
+              <input
+                type="file"
+                class="form-control-file"
+                id="exampleFormControlFile1"
+                name="path"
+                [required]="true"
+                #file="ngModel"
+                ngModel
+                (change)="selectImage($event)"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-text-input" class="col-sm-2 col-form-label"
+              >Description</label
+            >
+            <div class="col-sm-10">
+              <input
+                class="form-control"
+                type="text"
+                value="Artisanal kale"
+                id="example-text-input"
+                name="desc"
+                [required]="true"
+                #desc="ngModel"
+                ngModel
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="VedioLink" class="col-sm-2 col-form-label"
+              >Youtube ID Vedio</label
+            >
+            <div class="col-sm-10">
+              <input
+                class="form-control"
+                type="text"
+                value="VedioLink"
+                id="VedioLink"
+                name="VedioLink"
+                [required]="true"
+                #VedioLink="ngModel"
+                ngModel
+              />
+            </div>
+          </div>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button
+            type="button"
+            style="float: right"
+            data-dismiss="modal"
+            aria-label="Close"
+            class="btn btn-danger waves-effect waves-light"
+          >
+            Annuler
+          </button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button
+            style="float: right"
+            [disabled]="AC.invalid"
+            class="btn btn-success waves-effect waves-light"
+          >
+            Ajouter Cours
+          </button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </form>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!--******************************* Ajouter Devoir ************************************************-->
+
+<div
+  class="modal fade UploadDevoir"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myLargeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title mt-0" id="myLargeModalLabel">Ajouter Devoir</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #AD="ngForm" (ngSubmit)="AjouterDevoir(AD); AD.resetForm()">
+          <div class="form-group row">
+            <label for="example-text-input28" class="col-sm-2 col-form-label"
+              >Titre</label
+            >
+            <div class="col-sm-10">
+              <input
+                class="form-control"
+                type="text"
+                value="Artisanal kale"
+                id="example-text-input28"
+                name="title"
+                [required]="true"
+                #title="ngModel"
+                ngModel
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-text-input" class="col-sm-2 col-form-label"
+              >Devoir Pdf</label
+            >
+            <div class="col-sm-10">
+              <input
+                type="file"
+                class="form-control-file"
+                id="exampleFormControlFile1"
+                name="path"
+                [required]="true"
+                #file="ngModel"
+                ngModel
+                (change)="selectImage($event)"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-text-input" class="col-sm-2 col-form-label"
+              >Description</label
+            >
+            <div class="col-sm-10">
+              <input
+                class="form-control"
+                type="text"
+                value="Artisanal kale"
+                id="example-text-input"
+                name="desc"
+                [required]="true"
+                #desc="ngModel"
+                ngModel
+              />
+            </div>
+          </div>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button
+            type="button"
+            style="float: right"
+            data-dismiss="modal"
+            aria-label="Close"
+            class="btn btn-danger waves-effect waves-light"
+          >
+            Annuler
+          </button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button
+            style="float: right"
+            [disabled]="AD.invalid"
+            class="btn btn-success waves-effect waves-light"
+          >
+            Ajouter Devoir
+          </button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--******************************* Ajouter Quiz ************************************************-->
+
+<div
+  class="modal fade AjouterQuiz"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myLargeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="btn btn-primary" (click)="Return()" *ngIf="steps == 2">
+          <i class="fas fa-backward"></i>
+        </button>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <h5 class="modal-title mt-0" id="myLargeModalLabel">Ajouter Quiz</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="steps == 1">
+        <form #AQ="ngForm" (ngSubmit)="AjouterQuizQuestion(AQ); AQ.resetForm()">
+          <div class="form-group row">
+            <label for="example-text-input28" class="col-sm-2 col-form-label"
+              >Question</label
+            >
+            <div class="col-sm-10">
+              <input
+                class="form-control"
+                type="text"
+                value="Artisanal kale"
+                id="example-text-input28"
+                name="question_text"
+                [required]="true"
+                #question_text="ngModel"
+                ngModel
+              />
+            </div>
+          </div>
+
+          <button
+            style="float: right"
+            [disabled]="AQ.invalid"
+            class="btn btn-success waves-effect waves-light"
+          >
+            Quiz Option
+          </button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </form>
+      </div>
+      <div class="modal-body" *ngIf="steps == 2">
+        <form
+          #AQO="ngForm"
+          (ngSubmit)="AjouterQuizOption(AQO); AQO.resetForm()"
+        >
+          <div class="form-group row">
+            <label for="example-text-input" class="col-sm-2 col-form-label"
+              >option text</label
+            >
+            <div class="col-sm-10">
+              <input
+                class="form-control"
+                type="text"
+                placeholder="option text"
+                value="Artisanal kale"
+                id="example-text-input"
+                name="option_text"
+                [required]="true"
+                #option_text="ngModel"
+                ngModel
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-text-input" class="col-sm-2 col-form-label"
+              >Correct</label
+            >
+            <div class="col-sm-10">
+              <select
+                class="form-control"
+                id="correct"
+                required
+                name="correct"
+                #correct="ngModel"
+                ngModel
+              >
+                <option value="1">Oui</option>
+                <option value="0">Non</option>
+              </select>
+            </div>
+          </div>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button
+            style="float: right"
+            [disabled]="AQO.invalid"
+            class="btn btn-success waves-effect waves-light"
+          >
+            Ajouter
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--******************************* Confirmation Section ************************************************-->
+
+<div
+  class="modal fade"
+  id="SupprimerSection"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        êtes-vous sûr de vouloir supprimer cet Section
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          data-dismiss="modal"
+          class="btn btn-outline-secondary waves-effect"
+        >
+          Annuler
+        </button>
+        <button
+          type="button"
+          (click)="SupprimerSection()"
+          data-dismiss="modal"
+          class="btn btn-outline-danger waves-effect waves-light"
+        >
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--*********************************************Modifier Section******************************************-->
+
+<div
+  class="modal fade ModifierSection"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myLargeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title mt-0" id="myLargeModalLabel">
+          Modifier Section
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="RestMessage()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #MS="ngForm" (ngSubmit)="ModifierSection(MS); MS.resetForm()">
+          <div class="form-group row">
+            <label for="example-text-input" class="col-sm-2 col-form-label"
+              >Nom Section</label
+            >
+            <div class="col-sm-10">
+              <input
+                class="form-control"
+                type="text"
+                placeholder="Nom Section"
+                value="Artisanal kale"
+                id="example-text-input"
+                name="chapitername"
+                [(ngModel)]="ChapiterData.chapitername"
+                [required]="true"
+                #chapitername="ngModel"
+                ngModel
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-text-input" class="col-sm-2 col-form-label"
+              >Description</label
+            >
+            <div class="col-sm-10">
+              <textarea
+                required
+                class="form-control"
+                rows="5"
+                name="title"
+                [(ngModel)]="ChapiterData.desc"
+                placeholder="Section Description"
+                [required]="true"
+                #title="ngModel"
+                ngModel
+              ></textarea>
+            </div>
+          </div>
+
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button
+            type="button"
+            style="float: right"
+            data-dismiss="modal"
+            aria-label="Close"
+            class="btn btn-danger waves-effect waves-light"
+            (click)="RestMessage()"
+          >
+            Annuler
+          </button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button
+            style="float: right"
+            [disabled]="MS.invalid"
+            class="btn btn-success waves-effect waves-light"
+          >
+            Modifier Section
+          </button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </form>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!--*********************************************Modifier Cours******************************************-->
+
+<!--  Modal content for the above example -->
+<div
+  class="modal fade ModifierCourse"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myLargeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title mt-0" id="myLargeModalLabel">Modifier Cours</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #MC="ngForm" (ngSubmit)="ModifierCours(MC); MC.resetForm()">
+          <div class="form-group row">
+            <label for="example-text-input28" class="col-sm-2 col-form-label"
+              >Titre</label
+            >
+            <div class="col-sm-10">
+              <input
+                class="form-control"
+                type="text"
+                value="Artisanal kale"
+                id="example-text-input28"
+                name="title"
+                [(ngModel)]="CourseData.title"
+                [required]="true"
+                #title="ngModel"
+                ngModel
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-text-input" class="col-sm-2 col-form-label"
+              >Description</label
+            >
+            <div class="col-sm-10">
+              <input
+                class="form-control"
+                type="text"
+                value="Artisanal kale"
+                id="example-text-input"
+                name="desc"
+                [(ngModel)]="CourseData.description"
+                [required]="true"
+                #desc="ngModel"
+                ngModel
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="VedioLink" class="col-sm-2 col-form-label"
+              >Youtube ID Vedio</label
+            >
+            <div class="col-sm-10">
+              <input
+                class="form-control"
+                type="text"
+                value="VedioLink"
+                id="VedioLink"
+                [(ngModel)]="CourseData.vedio_link"
+                name="VedioLink"
+                [required]="true"
+                #VedioLink="ngModel"
+                ngModel
+              />
+            </div>
+          </div>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button
+            type="button"
+            style="float: right"
+            data-dismiss="modal"
+            aria-label="Close"
+            class="btn btn-danger waves-effect waves-light"
+          >
+            Annuler
+          </button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button
+            style="float: right"
+            [disabled]="MC.invalid"
+            class="btn btn-success waves-effect waves-light"
+          >
+            Modifier Cours
+          </button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </form>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!--******************************* Confirmation Cours ************************************************-->
+
+<div
+  class="modal fade"
+  id="SupprimerCourse"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">êtes-vous sûr de vouloir supprimer cet Cours</div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          data-dismiss="modal"
+          class="btn btn-outline-secondary waves-effect"
+        >
+          Annuler
+        </button>
+        <button
+          type="button"
+          (click)="SupprimerCours()"
+          data-dismiss="modal"
+          class="btn btn-outline-danger waves-effect waves-light"
+        >
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--******************************* Ajouter Devoir ************************************************-->
+
+<div
+  class="modal fade UploadDevoir"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myLargeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title mt-0" id="myLargeModalLabel">Ajouter Devoir</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #AD="ngForm" (ngSubmit)="AjouterDevoir(AD); AD.resetForm()">
+          <div class="form-group row">
+            <label for="example-text-input28" class="col-sm-2 col-form-label"
+              >Titre</label
+            >
+            <div class="col-sm-10">
+              <input
+                class="form-control"
+                type="text"
+                value="Artisanal kale"
+                id="example-text-input28"
+                name="title"
+                [required]="true"
+                #title="ngModel"
+                ngModel
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-text-input" class="col-sm-2 col-form-label"
+              >Devoir Pdf</label
+            >
+            <div class="col-sm-10">
+              <input
+                type="file"
+                class="form-control-file"
+                id="exampleFormControlFile1"
+                name="path"
+                [required]="true"
+                #file="ngModel"
+                ngModel
+                (change)="selectImage($event)"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-text-input" class="col-sm-2 col-form-label"
+              >Description</label
+            >
+            <div class="col-sm-10">
+              <input
+                class="form-control"
+                type="text"
+                value="Artisanal kale"
+                id="example-text-input"
+                name="desc"
+                [required]="true"
+                #desc="ngModel"
+                ngModel
+              />
+            </div>
+          </div>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button
+            type="button"
+            style="float: right"
+            data-dismiss="modal"
+            aria-label="Close"
+            class="btn btn-danger waves-effect waves-light"
+          >
+            Annuler
+          </button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button
+            style="float: right"
+            [disabled]="AD.invalid"
+            class="btn btn-success waves-effect waves-light"
+          >
+            Ajouter Devoir
+          </button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--******************************* Confirmation Devoir ************************************************-->
+
+<div
+  class="modal fade"
+  id="SupprimerDevoir"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">êtes-vous sûr de vouloir supprimer cet Devoir</div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          data-dismiss="modal"
+          class="btn btn-outline-secondary waves-effect"
+        >
+          Annuler
+        </button>
+        <button
+          type="button"
+          (click)="SupprimerDevoir()"
+          data-dismiss="modal"
+          class="btn btn-outline-danger waves-effect waves-light"
+        >
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

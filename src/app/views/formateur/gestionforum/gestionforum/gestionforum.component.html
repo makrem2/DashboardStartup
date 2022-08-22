@@ -1,0 +1,331 @@
+<br />
+<br />
+<div class="content-page">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <br />
+        <br />
+        <br />
+        <div class="container">
+          <div class="main-body p-0">
+            <div class="inner-wrapper">
+              <!-- Inner main -->
+              <div class="inner-main">
+                <!-- Inner main header -->
+                <div class="inner-main-header">
+                  <a
+                    class="nav-link nav-icon rounded-circle nav-link-faded mr-3 d-md-none"
+                    href="#"
+                    data-toggle="inner-sidebar"
+                    ><i class="material-icons">arrow_forward_ios</i></a
+                  >
+                  <div class="inner-sidebar-header justify-content-center">
+                    <button
+                      class="btn btn-primary has-icon btn-block"
+                      type="button"
+                      data-toggle="modal"
+                      data-target="#threadModal"
+                      (click)="ResetMessage()"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="feather feather-plus mr-2"
+                      >
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                      </svg>
+                      Poser une question
+                    </button>
+                  </div>
+                  <span class="input-icon input-icon-sm ml-auto w-auto">
+                    <input
+                      type="text"
+                      class="form-control form-control-sm bg-gray-200 border-gray-200 shadow-none mb-4 mt-4"
+                      placeholder="Recherche dans le forum"
+                      [(ngModel)]="searchText"
+                    />
+                  </span>
+                </div>
+                <div
+                  class="inner-main-body p-2 p-sm-3 collapse forum-content show"
+                >
+                  <div
+                    class="card mb-2"
+                    *ngFor="
+                      let item of dataQuestion
+                        | filter: searchText
+                        | paginate: { itemsPerPage: 5, currentPage: p };
+                      index as i
+                    "
+                  >
+                    <div class="card-body p-2 p-sm-3">
+                      <div class="media forum-item">
+                        <img
+                          src="data:image/png;base64,{{ item.users.photo }}"
+                          class="mr-3 rounded-circle"
+                          width="70px"
+                          height="70px"
+                          alt="{{ item.users.username }}"
+                        />
+                        <div class="media-body">
+                          <h6>
+                            <a class="text-body"
+                              >{{ item.users.nom }}
+                              {{ item.users.prenom }}
+                            </a>
+                          </h6>
+                          <h6>
+                            <a class="text-body">{{ item.topic }}</a>
+                          </h6>
+                          <small class="text-muted ml-2">{{
+                            item.timestamp
+                          }}</small>
+                          <p class="text-secondary">
+                            {{ item.content }}
+                          </p>
+                        </div>
+                        <div
+                          class="text-muted small text-center align-self-center"
+                        >
+                          <button
+                            class="btn btn-primary waves-effect waves-light"
+                            type="button"
+                            (click)="GetQuestionId(item.qid)"
+                            (click)="ResetMessage()"
+                            data-toggle="modal"
+                            data-target=".bs-example-modal-lg"
+                          >
+                            Reply
+                          </button>
+                        </div>
+                      </div>
+                      <br />
+                      <button
+                        class="btn btn-primary mo-mb-2"
+                        type="button"
+                        data-toggle="collapse"
+                        [attr.data-target]="'#test' + item.qid"
+                      >
+                        Afficher les Réponses
+                      </button>
+
+                      <div class="collapse" id="test{{ item.qid }}">
+                        <div
+                          class="card card-body mt-3 mb-0"
+                          *ngFor="let reply of item.replys"
+                        >
+                          <div class="card mb-2">
+                            <div class="card-body">
+                              <div
+                                class="media forum-item"
+                                *ngFor="let user of reply.users"
+                              >
+                                <a class="card-link">
+                                  <img
+                                    src="data:image/png;base64,{{ user.photo }}"
+                                    class="rounded-circle"
+                                    width="70px"
+                                    height="70px"
+                                    alt="{{ user.username }}"
+                                  />
+                                </a>
+                                <div class="media-body ml-3">
+                                  <a
+                                    href="javascript:void(0)"
+                                    class="text-secondary"
+                                    >{{ user.nom }} {{ user.prenom }}</a
+                                  >
+                                  <small class="text-muted ml-2">
+                                    {{ reply.timestamp }}</small
+                                  >
+                                  <div class="mt-3 font-size-sm">
+                                    <p>
+                                      {{ reply.content }}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <pagination-controls
+                    (pageChange)="p = $event"
+                  ></pagination-controls>
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                  <!--*********************************************pagination************************************-->
+                </div>
+              </div>
+              <!-- /Inner main -->
+            </div>
+
+            <!-- New Thread Modal -->
+            <div
+              class="modal fade"
+              id="threadModal"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="threadModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                  <form
+                    #poser="ngForm"
+                    (ngSubmit)="Poser(poser); poser.resetForm()"
+                  >
+                    <div
+                      class="modal-header d-flex align-items-center bg-primary text-white"
+                    >
+                      <h6 class="modal-title mb-0" id="threadModalLabel">
+                        Poser une question
+                      </h6>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="form-group">
+                        <label for="threadTitle">Sujet</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="threadTitle"
+                          placeholder="Enter Sujet"
+                          autofocus=""
+                          required
+                          name="topic"
+                          #topic="ngModel"
+                          ngModel
+                        />
+                      </div>
+                      <div
+                        class="alert alert-danger"
+                        *ngIf="topic.errors?.required && topic.touched"
+                      >
+                        Sujet is required
+                      </div>
+                      <label for="threadTitle">Contenu</label>
+                      <textarea
+                        class="form-control summernote"
+                        rows="8"
+                        placeholder="Enter Contenu"
+                        required
+                        name="content"
+                        #content="ngModel"
+                        ngModel
+                      ></textarea>
+                      <div
+                        class="alert alert-danger"
+                        *ngIf="content.errors?.required && content.touched"
+                      >
+                        Contenu is required
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        [disabled]="poser.invalid"
+                        class="btn btn-primary"
+                      >
+                        Posé
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-light"
+                        data-dismiss="modal"
+                      >
+                        Annuler
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ============================================================== -->
+<!-- End Right content here -->
+<!-- ============================================================== -->
+
+<!--  Modal content for the above example -->
+<div
+  class="modal fade bs-example-modal-lg"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myLargeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title mt-0" id="myLargeModalLabel">Réponse</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #reply="ngForm" (ngSubmit)="Reply(reply); reply.resetForm()">
+          <div class="modal-body">
+            <label for="threadTitle">Contenu</label>
+            <textarea
+              class="form-control summernote"
+              rows="8"
+              placeholder="Enter Contenu"
+              required
+              name="contentReply"
+              #contentReply="ngModel"
+              ngModel
+            ></textarea>
+            <div
+              class="alert alert-danger"
+              *ngIf="contentReply.errors?.required && contentReply.touched"
+            >
+              Contenu is required
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button [disabled]="reply.invalid" class="btn btn-primary">
+              Réponse
+            </button>
+            <button type="button" class="btn btn-light" data-dismiss="modal">
+              Annuler
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

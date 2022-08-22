@@ -1,0 +1,271 @@
+<br />
+<br />
+<br />
+<div class="container">
+  <div class="main-body">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="main-breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="">Accueil</a></li>
+        <li class="breadcrumb-item">
+          <a href="javascript:void(0)">Utilisateur</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          Profil de l'utilisateur
+        </li>
+      </ol>
+    </nav>
+    <!-- /Breadcrumb -->
+
+    <div class="row gutters-sm">
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex flex-column align-items-center text-center">
+              <img
+                class="img-thumbnail"
+                alt="200x200"
+                style="width: 200px; height: 200px"
+                src="data:image/png;base64,{{ OneUserData.photo }}"
+                data-holder-rendered="true"
+              />
+              <div class="mt-3">
+                <br />
+                <br />
+                <form (ngSubmit)="updatephoto()">
+                  <br />
+                  <div class="form-group">
+                    <label for="exampleFormControlFile1"
+                      >Modifier votre photo</label
+                    >
+                    <br />
+                    <br />
+                    <input
+                      type="file"
+                      class="form-control-file"
+                      id="exampleFormControlFile1"
+                      name="path"
+                      [required]="true"
+                      #photo="ngModel"
+                      ngModel
+                      (change)="selectImage($event)"
+                    />
+                    <br />
+                    <br />
+                    <button class="btn btn-outline-primary">Mise à jour</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card mb-3">
+          <div class="card-body">
+            <form #up="ngForm" (ngSubmit)="UpdateProfile(up)">
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="inputNom4">Nom</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputNom4"
+                    placeholder="Enter votre Nom"
+                    [(ngModel)]="OneUserData.nom"
+                    required
+                    name="nom"
+                    #nom="ngModel"
+                    ngModel
+                  />
+                </div>
+                <div
+                  class="alert alert-danger"
+                  *ngIf="nom.errors?.required && nom.touched"
+                >
+                  Nom est obligatoire
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="inputPassword4">Prenom</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputPrenom4"
+                    placeholder="Enter votre prenon"
+                    [(ngModel)]="OneUserData.prenom"
+                    required
+                    name="prenom"
+                    #prenom="ngModel"
+                    ngModel
+                  />
+                </div>
+                <div
+                  class="alert alert-danger"
+                  *ngIf="prenom.errors?.required && prenom.touched"
+                >
+                  Prenom est obligatoire
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputusername">Nom d'utilisateur</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inputusername"
+                  placeholder="username"
+                  [(ngModel)]="OneUserData.username"
+                  required
+                  name="username"
+                  #username="ngModel"
+                  ngModel
+                />
+              </div>
+              <div
+                class="alert alert-danger"
+                *ngIf="username.errors?.required && username.touched"
+              >
+                Nom d'utilisateur est obligatoire
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="inputEmail4">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="inputEmail4"
+                    placeholder="Email"
+                    [(ngModel)]="OneUserData.email"
+                    required
+                    name="email"
+                    #email="ngModel"
+                    ngModel
+                  />
+                </div>
+                <div
+                  class="alert alert-danger"
+                  *ngIf="email.errors?.required && email.touched"
+                >
+                  Email est obligatoire
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="inputpassword4">Mot de passe</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="inputpassword4"
+                    placeholder="Mot de passe"
+                    required
+                    name="password"
+                    #password="ngModel"
+                    ngModel
+                  />
+                  <div
+                    class="alert alert-danger"
+                    *ngIf="password.errors?.required && password.touched"
+                  >
+                    Mot de passe est obligatoire
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="inputAddress2">Region</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputAddress2"
+                    placeholder="Region"
+                    [(ngModel)]="OneUserData.region"
+                    required
+                    name="region"
+                    #region="ngModel"
+                    ngModel
+                  />
+                </div>
+                <div
+                  class="alert alert-danger"
+                  *ngIf="region.errors?.required && region.touched"
+                >
+                  Région est obligatoire
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="Téléphone">Téléphone</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="Téléphone"
+                    placeholder="Téléphone"
+                    [(ngModel)]="OneUserData.tel"
+                    required
+                    name="tel"
+                    #tel="ngModel"
+                    ngModel
+                  />
+                </div>
+                <div
+                  class="alert alert-danger"
+                  *ngIf="tel.errors?.required && tel.touched"
+                >
+                  Téléphone est obligatoire
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="date_naic">Date de Naissance</label>
+                <input
+                  class="form-control"
+                  type="datetime-local"
+                  id="date_naic"
+                  value="{{ OneUserData.date_naic | date: 'yyyy-MM-ddThh:mm' }}"
+                  required
+                  name="date_naic"
+                  #date_naic="ngModel"
+                  ngModel
+                />
+              </div>
+              <div
+                class="alert alert-danger"
+                *ngIf="date_naic.errors?.required && date_naic.touched"
+              >
+                Date de Naissance est obligatoire
+              </div>
+              <button [disabled]="up.invalid" class="btn btn-primary">
+                Update Profil
+              </button>
+
+              <!-- <div
+                class="alert alert-success alert-dismissible fade show"
+                role="alert"
+                *ngIf="messageSuccessprofile"
+              >
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="alert"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <strong>{{ messageSuccessprofile.message }}</strong>
+              </div>
+              <div
+                class="alert alert-danger alert-dismissible fade show"
+                role="alert"
+                *ngIf="messageErrorprofile"
+              >
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="alert"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <strong>{{ messageErrorprofile.message }}</strong>
+              </div> -->
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
