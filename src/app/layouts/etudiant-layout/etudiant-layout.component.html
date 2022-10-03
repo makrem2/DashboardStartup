@@ -1,0 +1,377 @@
+<!-- Begin page -->
+<div id="wrapper">
+  <!-- Top Bar Start -->
+  <div class="topbar">
+    <!-- LOGO -->
+    <div class="topbar-left">
+      <a routerLink="/etudiant" class="logo">
+        <span class="logo-light">
+          <img
+            style="height: 100%"
+            src="../../../assets/admin/images/logoic.png"
+            alt="logo"
+          />
+        </span>
+        <span class="logo-sm">
+          <img
+          style="width: 60px; height: 45px;"
+          src="../../../assets/admin/images/logo_icstartup_emojie_bleu-removebg-preview.png"
+          alt="logo"
+        />
+        </span>
+      </a>
+    </div>
+
+    <nav class="navbar-custom">
+      <ul class="navbar-right list-inline float-right mb-0">
+        <button
+          type="button"
+          class="btn btn-outline-info waves-effect waves-light"
+          data-toggle="modal"
+          data-target=".Contact"
+          (click)="RestMessage()"
+        >
+          Contactez-Nous
+        </button>
+        <!-- language-->
+        <!-- <li
+          class="dropdown notification-list list-inline-item d-none d-md-inline-block"
+        >
+          <a
+            class="nav-link dropdown-toggle arrow-none waves-effect"
+            data-toggle="dropdown"
+            href="#"
+            role="button"
+            aria-haspopup="false"
+            aria-expanded="false"
+          >
+            <img
+              src="../../../assets/admin/images/flags/us_flag.jpg"
+              class="mr-2"
+              height="12"
+              alt=""
+            />
+            English <span class="mdi mdi-chevron-down"></span>
+          </a>
+          <div
+            class="dropdown-menu dropdown-menu-right dropdown-menu-animated language-switch"
+          >
+            <a class="dropdown-item" href="#"
+              ><img
+                src="../../../assets/admin/images/flags/french_flag.jpg"
+                alt=""
+                height="16"
+              /><span> French </span></a
+            >
+          </div>
+        </li> -->
+
+        <!-- full screen -->
+        <li
+          class="dropdown notification-list list-inline-item d-none d-md-inline-block"
+        >
+          <!-- <a class="nav-link waves-effect" href="#" id="btn-fullscreen">
+            <i class="mdi mdi-arrow-expand-all noti-icon"></i>
+          </a> -->
+        </li>
+
+        <!-- notification -->
+        <li class="dropdown notification-list list-inline-item">
+          <a
+            class="nav-link dropdown-toggle arrow-none waves-effect"
+            data-toggle="dropdown"
+            href="#"
+            role="button"
+            aria-haspopup="false"
+            aria-expanded="false"
+          >
+            <i class="mdi mdi-bell-outline noti-icon"></i>
+            <span class="badge badge-pill badge-danger noti-icon-badge">0</span>
+          </a>
+          <div
+            class="dropdown-menu dropdown-menu-right dropdown-menu-animated dropdown-menu-lg px-1"
+          >
+            <!-- item-->
+            <h6 class="dropdown-item-text">Notifications</h6>
+            <div class="slimscroll notification-item-list">
+              <!-- item-->
+              <!-- <a
+                href="javascript:void(0);"
+                class="dropdown-item notify-item active"
+              >
+                <div class="notify-icon bg-success">
+                  <i class="mdi mdi-cart-outline"></i>
+                </div>
+                <p class="notify-details">
+                  <b>Votre commande est passée</b
+                  ><span class="text-muted"
+                    >Texte factice de l'industrie de l'imprimerie et de la
+                    composition.</span
+                  >
+                </p>
+              </a> -->
+
+              <!-- item-->
+              <!-- <a href="javascript:void(0);" class="dropdown-item notify-item">
+                <div class="notify-icon bg-danger">
+                  <i class="mdi mdi-message-text-outline"></i>
+                </div>
+                <p class="notify-details">
+                  <b>Nouveau message reçu</b
+                  ><span class="text-muted">Vous avez 87 messages non lus</span>
+                </p>
+              </a> -->
+
+              <!-- item-->
+
+              <!-- item-->
+              <!-- <a href="javascript:void(0);" class="dropdown-item notify-item">
+                <div class="notify-icon bg-success">
+                  <i class="mdi mdi-message-text-outline"></i>
+                </div>
+                <p class="notify-details">
+                  <b>Nouveau message reçu</b
+                  ><span class="text-muted">Vous avez 87 messages non lus</span>
+                </p>
+              </a> -->
+
+              <!-- item-->
+              <!-- <a href="javascript:void(0);" class="dropdown-item notify-item">
+                <div class="notify-icon bg-warning">
+                  <i class="mdi mdi-cart-outline"></i>
+                </div>
+                <p class="notify-details">
+                  <b>Votre commande est passée</b
+                  ><span class="text-muted"
+                    >Texte factice de l'industrie de l'imprimerie et de la
+                    composition.</span
+                  >
+                </p>
+              </a> -->
+            </div>
+            <!-- All-->
+            <a
+              href="javascript:void(0);"
+              class="dropdown-item text-center notify-all text-primary"
+            >
+              Voir tous <i class="fi-arrow-right"></i>
+            </a>
+          </div>
+        </li>
+
+        <li class="dropdown notification-list list-inline-item">
+          <div class="dropdown notification-list nav-pro-img">
+            <a
+              class="dropdown-toggle nav-link arrow-none nav-user"
+              data-toggle="dropdown"
+              href="#"
+              role="button"
+              aria-haspopup="false"
+              aria-expanded="false"
+            >
+              <img
+                style="height: 50px; width: 50px"
+                src="data:image/png;base64,{{ Datauser.photo }}"
+                alt="user"
+                class="rounded-circle"
+              />
+            </a>
+            <div class="dropdown-menu dropdown-menu-right profile-dropdown">
+              <!-- item-->
+              <a class="dropdown-item" routerLink="profile"
+                ><i class="mdi mdi-account-circle"></i>Profile</a
+              >
+              <!-- <a class="dropdown-item" href="#"><i class="mdi mdi-wallet"></i> Wallet</a>
+                              <a class="dropdown-item d-block" href="#"><span class="badge badge-success float-right">11</span><i class="mdi mdi-settings"></i> Settings</a>
+                              <a class="dropdown-item" href="#"><i class="mdi mdi-lock-open-outline"></i> Lock screen</a> -->
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item text-danger" (click)="Lougout()"
+                ><i class="mdi mdi-power text-danger"></i>Se déconnecter</a
+              >
+            </div>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="list-inline menu-left mb-0">
+        <li class="float-left">
+          <button class="button-menu-mobile open-left waves-effect">
+            <i class="mdi mdi-menu"></i>
+          </button>
+        </li>
+        <li class="d-none d-md-inline-block">
+          <form role="search" class="app-search">
+            <div class="form-group mb-0">
+              <input type="text" class="form-control" placeholder="Search.." />
+              <button type="submit"><i class="fa fa-search"></i></button>
+            </div>
+          </form>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <!-- Top Bar End -->
+
+  <!-- ========== Left Sidebar Start ========== -->
+  <div class="left side-menu">
+    <div class="slimscroll-menu" id="remove-scroll">
+      <!--- Sidemenu -->
+      <div id="sidebar-menu">
+        <!-- Left Menu Start -->
+        <ul class="metismenu" id="side-menu">
+          <li class="menu-title">Menu</li>
+          <li>
+            <a routerLink="/etudiant" class="waves-effect">
+              <i class="icon-accelerator"></i
+              ><span class="badge badge-success badge-pill float-right"
+                ></span
+              >
+              <span> Tableau de bord </span>
+            </a>
+          </li>
+          <br />
+          <li>
+            <a routerLink="moncours" class="waves-effect"
+              ><i class="fas fa-user-tie"></i><span>Mon Cours</span></a
+            >
+          </li>
+          <br />
+          <li>
+            <a routerLink="nosformations" class="waves-effect"
+              ><i class="mdi mdi-shopping"></i><span>Nos Formations</span></a
+            >
+          </li>
+          <br />
+           <!--<li>
+            <a routerLink="listfavorite" class="waves-effect"
+              ><i class="mdi mdi-cards-heart"></i
+              ><span> List Favorite </span></a
+            >
+          </li> 
+          <br />-->
+          <li>
+            <a routerLink="gestionForum" class="waves-effect"
+              ><i class="fas fa-book-reader"></i><span>Forum </span></a
+            >
+          </li>
+          <br />
+          <li>
+            <a routerLink="gestionNote" class="waves-effect"
+              ><i class="far fa-sticky-note"></i><span>Mon Note </span></a
+            >
+          </li>
+          <br />
+          <li>
+            <a routerLink="score" class="waves-effect"
+              ><i class="fas fa-book-reader"></i><span>Mon Score</span></a
+            >
+          </li>
+        </ul>
+      </div>
+      <!-- Sidebar -->
+      <div class="clearfix"></div>
+    </div>
+    <!-- Sidebar -left -->
+  </div>
+  <!-- Left Sidebar End -->
+  <router-outlet></router-outlet>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<footer class="footer">© 2022 <a href="" target="_blank">IcStartup</a>.</footer>
+<!-- END wrapper -->
+
+<div
+  class="modal fade Contact"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myLargeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title mt-0" id="myLargeModalLabel">Contactez Nous</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="RestMessage()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #f="ngForm" (ngSubmit)="Contact(f); f.resetForm()">
+          <div class="card-body">
+            <div class="form-group">
+              <label>Objet</label>
+              <div>
+                <input
+                  data-parsley-type="alphanum"
+                  type="text"
+                  class="form-control"
+                  required
+                  placeholder="Enter Objet value"
+                  required
+                  name="objet"
+                  #objet="ngModel"
+                  ngModel
+                />
+              </div>
+              <div
+                class="alert alert-danger"
+                role="alert"
+                *ngIf="objet.errors?.required && objet.touched"
+              >
+                <strong> Objet is required</strong>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Contenu</label>
+              <div>
+                <textarea
+                  required
+                  class="form-control"
+                  rows="8"
+                  required
+                  name="contenu"
+                  #contenu="ngModel"
+                  ngModel
+                ></textarea>
+              </div>
+              <div
+                class="alert alert-danger"
+                role="alert"
+                *ngIf="contenu.errors?.required && contenu.touched"
+              >
+                <strong> Contenu is required</strong>
+              </div>
+            </div>
+            <!-- <div
+              class="alert alert-success"
+              role="alert"
+              *ngIf="messagesuccess"
+            >
+              <strong>{{ messagesuccess.message }}</strong>
+            </div>
+            <div class="alert alert-danger" role="alert" *ngIf="messageerror">
+              <strong>{{ messageerror.message }}</strong>
+            </div> -->
+            <button class="btn btn-outline-primary waves-effect waves-light">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

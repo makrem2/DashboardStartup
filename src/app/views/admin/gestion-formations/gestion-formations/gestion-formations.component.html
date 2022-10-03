@@ -1,0 +1,679 @@
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="content-page">
+  <!-- Start content -->
+  <div class="content">
+    <div class="container-fluid">
+      <div class="page-title-box">
+        <div class="row align-items-center">
+          <div class="col-sm-6">
+            <h4 class="page-title">List des Formations</h4>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-right">
+              <li class="breadcrumb-item">
+                <a href="javascript:void(0);">Tableau de bord</a>
+              </li>
+              <li class="breadcrumb-item">
+                <a href="javascript:void(0);">List des Formations</a>
+              </li>
+              <li class="breadcrumb-item active">Data List Formations</li>
+            </ol>
+          </div>
+        </div>
+        <!-- end row -->
+      </div>
+      <div  *ngIf="!spinnner"
+      class="spinner-border text-primary" id="spinner" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <!-- end page-title -->
+      <div class="row" *ngIf="spinnner">
+        <div class="col-12">
+          <div class="card m-b-30">
+            <div class="card-body">
+              <div class="form-group row">
+                <div class="col-sm-10">
+                  <input
+                    class="form-control"
+                    type="search"
+                    id="example-search-input"
+                    placeholder="Search Bar"
+                    [(ngModel)]="searchText"
+                  />
+                </div>
+                <button
+                  type="button"
+                  class="btn btn-primary waves-effect waves-light"
+                  data-toggle="modal"
+                  data-target=".bs-example-modal-lg"
+                  (click)="RestMessage()"
+                >
+                  Ajouter Formation
+                </button>
+              </div>
+              <div class="container">
+                <div class="row">
+                  <div
+                    class="col-md-3"
+                    *ngFor="
+                      let item of DataFormation
+                        | filter: searchText
+                        | paginate: { itemsPerPage: 8, currentPage: p }
+                    "
+                  >
+                    <div class="ibox">
+                      <div class="ibox-content product-box">
+                        <button
+                          type="button"
+                          class="btn btn-primary dropdown-toggle"
+                          style="position: absolute; float: left"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          <i class="mdi mdi-dialpad"></i>
+                        </button>
+                        <img
+                          src="data:image/png;base64,{{ item.image }}"
+                          width="230px"
+                          height="200px"
+                          alt=""
+                        />
+                        <div class="dropdown-menu">
+                          <a
+                            class="dropdown-item"
+                            data-toggle="modal"
+                            data-target=".ModifierModal"
+                            (click)="
+                              GetdataFormation(
+                                item.id,
+                                item.description,
+                                item.intitule,
+                                item.tags,
+                                item.titre,
+                                item.formationscategorie?.id
+                              )
+                            "
+                            >Modifier</a
+                          >
+                          <a
+                            class="dropdown-item"
+                            (click)="GetIdFormationToDelete(item.id)"
+                            data-toggle="modal"
+                            data-target=".deleteModal"
+                            >Supprimer</a
+                          >
+                        </div>
+                        <div class="product-desc">
+                          <span class="product-price"> 750 DT </span>
+                          <small class="text-muted">{{
+                            item.formationscategorie?.name
+                          }}</small>
+                          <a
+                            routerLink="../../admin/gestionFormation"
+                            class="product-name"
+                            >{{ item.titre }}</a
+                          >
+
+                          <div class="small m-t-xs">
+                            {{
+                              item.description.length > 100
+                                ? (item.description | slice: 0:90) + ".."
+                                : item.description
+                            }}
+                          </div>
+                          <div class="m-t text-righ">
+                            <!-- <br />
+                            <a
+                              href="#"
+                              class="btn btn-xs btn-outline btn-primary"
+                              >Info <i class="fa fa-long-arrow-right"></i>
+                            </a> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngIf="!DataFormation.length">
+                  <h6>La liste des formations est vide</h6>
+                </div>
+                <pagination-controls
+                  (pageChange)="p = $event"
+                ></pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end col -->
+      </div>
+      <!-- end row -->
+    </div>
+    <!-- container-fluid -->
+
+  </div>
+  <!-- content -->
+</div>
+
+
+<div
+  class="modal fade deleteModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myLargeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Supprimer Formation</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        êtes-vous sûr de vouloir supprimer cette Formation
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-outline-secondary waves-effect"
+          data-dismiss="modal"
+        >
+          Fermer
+        </button>
+        <button
+          type="button"
+          data-dismiss="modal"
+          class="btn btn-outline-danger waves-effect waves-light"
+          (click)="DeleteFormation()"
+        >
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!--  Modal content for the above example -->
+<div
+  class="modal fade bs-example-modal-lg"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myLargeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title mt-0" id="myLargeModalLabel">
+          Gestion Formations
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-12">
+              <div class="card m-b-30">
+                <div class="card-body">
+                  <!-- Nav tabs -->
+                  <ul class="nav nav-pills nav-justified" role="tablist">
+                    <li class="nav-item waves-effect waves-light">
+                      <a
+                        class="nav-link active"
+                        data-toggle="tab"
+                        href="#home-1"
+                        role="tab"
+                      >
+                        <span class="d-none d-md-block" (click)="RestMessage()"
+                          >Ajouter Formation</span
+                        ><span class="d-block d-md-none"
+                          ><i class="mdi mdi-home-variant h5"></i
+                        ></span>
+                      </a>
+                    </li>
+                    <li class="nav-item waves-effect waves-light">
+                      <a
+                        class="nav-link"
+                        data-toggle="tab"
+                        href="#profile-1"
+                        role="tab"
+                      >
+                        <span class="d-none d-md-block" (click)="RestMessage()"
+                          >Affecter l'etudiant a la formation </span
+                        ><span class="d-block d-md-none"
+                          ><i class="mdi mdi-account h5"></i
+                        ></span>
+                      </a>
+                    </li>
+                    <li class="nav-item waves-effect waves-light">
+                      <a
+                        class="nav-link"
+                        data-toggle="tab"
+                        href="#messages-1"
+                        role="tab"
+                      >
+                        <span class="d-none d-md-block" (click)="RestMessage()"
+                          >Ajouter Formation Categorie</span
+                        ><span class="d-block d-md-none"
+                          ><i class="mdi mdi-email h5"></i
+                        ></span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                  <div class="tab-pane active p-3" id="home-1" role="tabpanel">
+                    <h4 class="mt-0 header-title">Ajouter Formation</h4>
+                    <br />
+                    <form
+                      #f="ngForm"
+                      (ngSubmit)="AddFormation(f); f.resetForm()"
+                    >
+                      <div class="form-group">
+                        <label for="Prenom">Titre</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="titre"
+                          placeholder="titre"
+                          required
+                          name="titre"
+                          #titre="ngModel"
+                          ngModel
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleFormControlInput1"
+                          >Catégorie de formation</label
+                        >
+                        <select
+                          class="browser-default custom-select"
+                          id="categorie"
+                          name="categorie"
+                          #categorie="ngModel"
+                          ngModel
+                        >
+                          <option selected [ngValue]="null" disabled>
+                            Choisir la catégorie de formation
+                          </option>
+                          <option
+                            *ngFor="let item of DataFormationCategorie"
+                            value="{{ item?.id }}"
+                          >
+                            {{ item?.name }}
+                          </option>
+                        </select>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="
+                            categorie.errors?.required && categorie.touched
+                          "
+                        >
+                          catégorie de formation est obligatoire
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="Nom">Image</label>
+                        <input
+                          type="file"
+                          class="form-control-file"
+                          id="exampleFormControlFile1"
+                          name="path"
+                          [required]="true"
+                          #photo="ngModel"
+                          ngModel
+                          (change)="selectImage($event)"
+                        />
+                      </div>
+                      <div
+                        class="alert alert-danger"
+                        *ngIf="photo.errors?.required && photo.touched"
+                      >
+                        Image est obligatoire
+                      </div>
+                      <div class="form-group">
+                        <label for="Prenom">Intitule</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="intitule"
+                          placeholder="intitule"
+                          required
+                          name="intitule"
+                          #intitule="ngModel"
+                          ngModel
+                        />
+                      </div>
+                      <div
+                        class="alert alert-danger"
+                        *ngIf="intitule.errors?.required && intitule.touched"
+                      >
+                        Intitule is required
+                      </div>
+                      <div class="form-group">
+                        <label for="Description">Description</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="Description"
+                          placeholder="Description"
+                          required
+                          name="Description"
+                          #Description="ngModel"
+                          ngModel
+                        />
+                      </div>
+                      <div
+                        class="alert alert-danger"
+                        *ngIf="
+                          Description.errors?.required && Description.touched
+                        "
+                      >
+                        Description est obligatoire
+                      </div>
+                      <div class="form-group">
+                        <label for="tags">tags</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="tags"
+                          placeholder="Béja"
+                          required
+                          name="tags"
+                          #tags="ngModel"
+                          ngModel
+                        />
+                      </div>
+                      <div
+                        class="alert alert-danger"
+                        *ngIf="tags.errors?.required && tags.touched"
+                      >
+                        Tags est obligatoire
+                      </div>
+                      <button class="btn btn-success" [disabled]="f.invalid">
+                        Ajouter une formation
+                      </button>
+                    </form>
+                  </div>
+                  <div class="tab-pane p-3" id="profile-1" role="tabpanel">
+                    <h4 class="mt-0 header-title">
+                      Affecter l'etudiant a la formation
+                    </h4>
+                    <br />
+                    <form
+                      #AF="ngForm"
+                      (ngSubmit)="Affecter(AF); AF.resetForm()"
+                    >
+                      <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"
+                          >Liste Formation</label
+                        >
+                        <div class="col-sm-10">
+                          <select
+                            class="custom-select"
+                            required
+                            name="formation"
+                            #FormationId="ngModel"
+                            ngModel
+                          >
+                            <option disabled>Choisir la formation</option>
+                            <option
+                              *ngFor="let item of DataFormation"
+                              value="{{ item.id }}"
+                            >
+                              {{ item?.titre }}
+                            </option>
+                          </select>
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="
+                            FormationId.errors?.required && FormationId.touched
+                          "
+                        >
+                          Formation est obligatoire
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"
+                          >Liste Etudiant</label
+                        >
+                        <div class="col-sm-10">
+                          <select
+                            class="custom-select"
+                            required
+                            name="etudiant"
+                            #etudiantId="ngModel"
+                            ngModel
+                          >
+                            <option selected [ngValue]="null" disabled>
+                              Choisir Etudiant
+                            </option>
+                            <option
+                              *ngFor="let item of DataUser"
+                              value="{{ item.id }}"
+                            >
+                              {{ item?.username }}
+                            </option>
+                          </select>
+                        </div>
+                        <div
+                          class="alert alert-danger"
+                          *ngIf="
+                            etudiantId.errors?.required && etudiantId.touched
+                          "
+                        >
+                          Etudiant est obligatoire
+                        </div>
+                      </div>
+
+                      <button class="btn btn-success" [disabled]="AF.invalid">
+                        Affecter
+                      </button>
+                    </form>
+                  </div>
+                  <div class="tab-pane p-3" id="messages-1" role="tabpanel">
+                    <h4 class="mt-0 header-title">
+                      Ajouter Formation Categorie
+                    </h4>
+                    <br />
+                    <form
+                      #c="ngForm"
+                      (ngSubmit)="AddFormationCategorie(c); c.resetForm()"
+                    >
+                      <div class="form-group">
+                        <label for="name">Catégorie</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="name"
+                          placeholder="Developpement Web ...."
+                          required
+                          name="name"
+                          #name="ngModel"
+                          ngModel
+                        />
+                      </div>
+                      <div
+                        class="alert alert-danger"
+                        *ngIf="name.errors?.required && name.touched"
+                      >
+                        Catégories est obligatoire
+                      </div>
+
+                      <button class="btn btn-success" [disabled]="c.invalid">
+                        Ajouter une catégorie de formation
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!--************************************Modifier Formation*********************************-->
+
+<div
+  class="modal fade ModifierModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myLargeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title mt-0" id="myLargeModalLabel">
+          Modifier Formation
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #up="ngForm" (ngSubmit)="UpdateFormation(up); up.resetForm()">
+          <div class="form-group">
+            <label for="Prenom">Titre</label>
+            <input
+              type="text"
+              class="form-control"
+              id="titre"
+              placeholder="titre"
+              required
+              [(ngModel)]="UpDataFormation.titre"
+              name="titre"
+              #titre="ngModel"
+              ngModel
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Formation Categorie</label>
+            <select
+              class="browser-default custom-select"
+              id="categorie"
+              name="categorie"
+              #categorie="ngModel"
+              ngModel
+              [ngModel]="ModfierCategorie"
+            >
+              <option selected [ngValue]="null" disabled>
+                Choisissez une catégorie
+              </option>
+              <option
+                *ngFor="let item of DataFormationCategorie"
+                value="{{ item?.id }}"
+              >
+                {{ item?.name }}
+              </option>
+            </select>
+            <div
+              class="alert alert-danger"
+              *ngIf="categorie.errors?.required && categorie.touched"
+            >
+              La catégorie de formation est obligatoire
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="Prenom">Intitule</label>
+            <input
+              type="text"
+              class="form-control"
+              id="intitule"
+              placeholder="intitule"
+              required
+              name="intitule"
+              #intitule="ngModel"
+              ngModel
+              [(ngModel)]="UpDataFormation.intitule"
+            />
+          </div>
+          <div
+            class="alert alert-danger"
+            *ngIf="intitule.errors?.required && intitule.touched"
+          >
+            Intitule est obligatoire
+          </div>
+          <div class="form-group">
+            <label for="Description">Description</label>
+            <input
+              type="text"
+              class="form-control"
+              id="Description"
+              placeholder="Description"
+              required
+              name="Description"
+              #Description="ngModel"
+              ngModel
+              [(ngModel)]="UpDataFormation.description"
+            />
+          </div>
+          <div
+            class="alert alert-danger"
+            *ngIf="Description.errors?.required && Description.touched"
+          >
+            Description est obligatoire
+          </div>
+          <div class="form-group">
+            <label for="tags">tags</label>
+            <input
+              type="text"
+              class="form-control"
+              id="tags"
+              placeholder="Béja"
+              required
+              name="tags"
+              #tags="ngModel"
+              ngModel
+              [(ngModel)]="UpDataFormation.tags"
+            />
+          </div>
+          <div
+            class="alert alert-danger"
+            *ngIf="tags.errors?.required && tags.touched"
+          >
+            Tags est obligatoire
+          </div>
+          <button class="btn btn-success" [disabled]="up.invalid">
+            Modifier Formation
+          </button>
+        </form>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

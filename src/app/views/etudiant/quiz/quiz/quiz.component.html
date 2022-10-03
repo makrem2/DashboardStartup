@@ -1,0 +1,161 @@
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="content-page">
+  <!-- Start content -->
+  <div class="content">
+    <div class="container-fluid">
+      <div class="page-title-box">
+        <div class="row align-items-center">
+          <div class="col-sm-6">
+            <h4 class="page-title">Quiz</h4>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-right">
+              <li class="breadcrumb-item">
+                <a href="javascript:void(0);">Tableau de bord</a>
+              </li>
+              <li class="breadcrumb-item">
+                <a href="javascript:void(0);">Quiz</a>
+              </li>
+              <!-- <li class="breadcrumb-item active">Quiz</li> -->
+            </ol>
+          </div>
+        </div>
+        <!-- end row -->
+      </div>
+      <!-- end page-title -->
+
+      <div *ngIf="!spinnner" class="spinner-border text-primary" id="spinner" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+
+
+      <div class="container" *ngIf="spinnner">
+        <div class="card">
+          <div class="row justify-content-center">
+            <div class="col-md-6">
+              <div class="image">
+                <!-- <img
+                  src="../../../../../assets/admin/angular.png"
+                  alt="image"
+                  width="90"
+                /> -->
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="quiz-header">
+                <h4 style="font-family: cursive">
+                  Quiz!
+                </h4>
+                <span style="font-style: italic">Welcome {{username}}</span>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="!isQuizCompleted">
+            <div class="container mt-5">
+              <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-12">
+                  <div class="score">
+                    <h5>{{ points }} Points</h5>
+                  </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                  <div class="question-remain">
+                    <span style="font-style: italic">Question {{ currentQuestion + 1 }} of
+                      {{ questionlist.length }}</span>
+                  </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                  <div class="timer">{{ counter }} sec⏱️</div>
+                </div>
+              </div>
+            </div>
+            <div class="progress m-b-15">
+              <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+                [ngStyle]="{ width: progress + '%' }" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+
+            <div class="question">
+              <div class="card">
+                <h3>{{ questionlist[currentQuestion]?.questionText }}</h3>
+              </div>
+            </div>
+
+            <div class="options">
+              <ol *ngFor="let item of questionlist[currentQuestion]?.quiz_Options">
+                <li (click)="answer(currentQuestion + 1, item)">
+                  <div class="card" appChangeBg [isCorrect]="item.correct">
+                    {{ item.optionText }}
+                  </div>
+                </li>
+              </ol>
+            </div>
+
+            <!-- <div class="container mt-5">
+              <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-12">
+                  <button
+                    [disabled]="currentQuestion === 0"
+                    class="btn"
+                    (click)="previousQuestion()"
+                  >
+                    <i
+                      class="fa text-primary mdi mdi-arrow-left-thick fa-5x"
+                      aria-hidden="true"
+                    ></i>
+                  </button>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                  <button class="btn" (click)="resetQuiz()">
+                    <i
+                      class="fa text-primary mdi mdi-reload fa-5x"
+                      aria-hidden="true"
+                    ></i>
+                  </button>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                  <button class="btn" (click)="nextQuestion()">
+                    <i
+                      class="fa text-primary mdi mdi-arrow-right-thick fa-5x"
+                      aria-hidden="true"
+                    ></i>
+                  </button>
+                </div>
+              </div>
+            </div> -->
+          </div>
+
+          <div *ngIf="isQuizCompleted">
+            <div class="row d-flex justify-content-between">
+              <!-- <img
+                style="width: 50px"
+                src="../../../../../assets/admin/angular.png"
+                alt="angular.png"
+              /> -->
+            </div>
+            <div class="result text-center col-md-6 col-sm-12">
+              <h3>
+                Félicitations ! !! <br />
+                Vous avez terminé le quiz.<br />Vous trouverez ci-dessous votre résultat :
+              </h3>
+              <p>Total des questions posées : {{ questionlist.length }}</p>
+              <p>Total des réponses correctes : {{ correctAnswer }}</p>
+              <p>Total des réponses fausses: {{ inCorrectAnswer }}</p>
+              <p>Votre score : {{ points }} points</p>
+            </div>
+            <button class="btn btn-primary" (click)="Score()">Soumettre</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- container-fluid -->
+  </div>
+  <!-- content -->
+</div>
