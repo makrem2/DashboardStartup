@@ -67,7 +67,7 @@ export class CoursedetailsComponent implements OnInit {
   ngOnInit(): void {
     this.id =this.Activatedroute.snapshot.queryParamMap.get('FormationId') || 0;
     this.userid = this.authadmin.getUserid();
-    this.dataSerivce.listChapiterparFormation(this.id).subscribe((data) => {
+    this.closeSub= this.dataSerivce.listChapiterparFormation(this.id).subscribe((data) => {
       this.spinnner = true;
       this.CourseDetail = data;
     });
@@ -88,7 +88,7 @@ export class CoursedetailsComponent implements OnInit {
   GetDevoirId(devoirid: any) {
     this.devoirid = devoirid;
     this.spinnner = true;
-    this.dataSerivce.countdepotdevoir(this.userid, this.devoirid).subscribe(
+    this.closeSub=this.dataSerivce.countdepotdevoir(this.userid, this.devoirid).subscribe(
       (data) => {
         this.depotdevoir = data;
         this.spinnner = false;
@@ -147,11 +147,11 @@ export class CoursedetailsComponent implements OnInit {
 
   StartQuiz(quizid: any) {
     this.spinnner = true;
-    this.dataSerivce.CountListQuiz(quizid).subscribe(
+    this.closeSub = this.dataSerivce.CountListQuiz(quizid).subscribe(
       (data) => {
         this.CountListQuiz = data;
         if (this.CountListQuiz > 0) {
-          this.dataSerivce.CountNote(this.userid, quizid).subscribe((data) => {
+          this.closeSub = this.dataSerivce.CountNote(this.userid, quizid).subscribe((data) => {
             this.notequiz = data;
             //console.log(this.notequiz);
             if (this.notequiz >= 1) {
@@ -166,7 +166,7 @@ export class CoursedetailsComponent implements OnInit {
               Data.append('userid', this.userid);
               Data.append('chapiterId', quizid);
               this.spinnner = false;
-              this.dataSerivce.AddQuizNote(Data).subscribe(
+              this.closeSub = this.dataSerivce.AddQuizNote(Data).subscribe(
                 (data) => {
                   this.ngOnInit();
                   this.spinnner = false;

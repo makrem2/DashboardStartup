@@ -24,7 +24,7 @@ export class GestionEtudiantsComponent implements OnInit {
 
   GetAllEtudiants() {
     this.userId = localStorage.getItem('tokenid');
-    this.dataFormateur.GetUserSpecialite(this.userId).subscribe(
+    this.closeSub = this.dataFormateur.GetUserSpecialite(this.userId).subscribe(
       (data) => {
       },
       (err: HttpErrorResponse) => {
@@ -37,5 +37,11 @@ export class GestionEtudiantsComponent implements OnInit {
           });
       }
     );
+  }
+
+  ngOnDestroy() {
+    if (this.closeSub) {
+      this.closeSub.unsubscribe();
+    }
   }
 }

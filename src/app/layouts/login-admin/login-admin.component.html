@@ -16,7 +16,11 @@
       </div>
       <h5 class="font-18 text-center">S'inscrire pour continuer .</h5>
 
-      <form
+      <div *ngIf="spinnner" class="spinner-border text-primary" id="spinner" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      
+      <form *ngIf="!spinnner"
         class="form-horizontal m-t-30"
         #f="ngForm"
         (ngSubmit)="loginadmin(f)"

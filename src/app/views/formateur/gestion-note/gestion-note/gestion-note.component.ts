@@ -21,13 +21,19 @@ export class GestionNoteComponent implements OnInit {
     this.findNoteparFormateur()
   }
 
+  ngOnDestroy() {
+    if (this.closeSub) {
+      this.closeSub.unsubscribe();
+    }
+  }
+
   findNoteparFormateur() {
 
 
     this.id = localStorage.getItem('tokenid')
 
 
-    this.dsAdmin.findNoteparFormateur(this.id).subscribe((data) => {
+    this.closeSub= this.dsAdmin.findNoteparFormateur(this.id).subscribe((data) => {
 
       this.spinnner = true
       this.DataNote = data

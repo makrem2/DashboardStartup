@@ -32,53 +32,53 @@ export class DashboardEtudiantComponent implements OnInit {
 
 
   reload(){
-    this.dsadmin
+    this.closeSub= this.dsadmin
       .CountUser('ROLE_Formateur')
       .subscribe((data) => {
         this.NbFormateur = data
       });
 
-    this.dsadmin
+      this.closeSub= this.dsadmin
       .CountUser('ROLE_Etudiant')
       .subscribe((data) => {
         this.NbEtudiant = data
       });
 
-    this.dsadmin
+      this.closeSub= this.dsadmin
       .CountFormation()
       .subscribe((data) => {
 
         this.NbFormation = data;
       });
 
-    this.dsadmin.ActiveSession().subscribe((data) => {
+      this.closeSub= this.dsadmin.ActiveSession().subscribe((data) => {
 
       this.NBSession = data
 
     });
 
-    this.dsadmin.GetMaxMoyenne().subscribe((data) => {
+    this.closeSub= this.dsadmin.GetMaxMoyenne().subscribe((data) => {
       
       this.MaxMoyenne = data
       this.spinnner = true;
 
     });
 
-    this.dsadmin
+    this.closeSub= this.dsadmin
       .GetMaxMoyenneParFormation('Developpement Web')
       .subscribe((data) => {
 
         this.MaxMoyenneParFormationWeb = data
       });
 
-    this.dsadmin
+      this.closeSub= this.dsadmin
       .GetMaxMoyenneParFormation('Marketing Digital')
       .subscribe((data) => {
 
         this.MaxMoyenneParFormationMarketing = data
       });
 
-    this.dsadmin
+      this.closeSub=  this.dsadmin
       .GetMaxMoyenneParFormation('Robotique')
       .subscribe((data) => {
 

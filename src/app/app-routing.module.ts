@@ -13,9 +13,11 @@ const routes: Routes = [
   {path:'admin',component:AdminLayoutComponent,canActivate:[AdminGuardsGuard],children:[
     {path:'',loadChildren:()=>import('./views/admin/dashboard/dashboard.module').then(m=>m.DashboardModule)},
     {path:'dashboard',loadChildren:()=>import('./views/admin/dashboard/dashboard.module').then(m=>m.DashboardModule)},
+    {path:'ajouterutilisateur',loadChildren:()=>import('./views/admin/ajouterutilistateur/ajouterutilistateur.module').then(m=>m.AjouterutilistateurModule)},
     {path:'gestionutilisateur',loadChildren:()=>import('./views/admin/gestionutilisateur/gestionutilisateur.module').then(m=>m.GestionutilisateurModule)},
     {path:'profile',loadChildren:()=>import('./views/admin/user-profile/user-profile.module').then(m=>m.UserProfileModule)},
     {path:'gestionmessage',loadChildren:()=>import('./views/admin/gestion-message/gestion-message.module').then(m=>m.GestionMessageModule)},
+    {path:'ajouterFormation',loadChildren:()=>import('./views/admin/ajouterformation/ajouterformation.module').then(m=>m.AjouterformationModule)},
     {path:'gestionFormation',loadChildren:()=>import('./views/admin/gestion-formations/gestion-formations.module').then(m=>m.GestionFormationsModule)},
     {path:'gestionSession',loadChildren:()=>import('./views/admin/gestion-session/gestion-session.module').then(m=>m.GestionSessionModule)},
     {path:'gestionCours',loadChildren:()=>import('./views/admin/gestion-cours/gestion-cours.module').then(m=>m.GestionCoursModule)},

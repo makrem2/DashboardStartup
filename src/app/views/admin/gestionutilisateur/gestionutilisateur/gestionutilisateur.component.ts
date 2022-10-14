@@ -10,92 +10,27 @@ import { NotificationService } from 'src/app/services/notification.service';
   styleUrls: ['./gestionutilisateur.component.css'],
 })
 export class GestionutilisateurComponent implements OnInit {
-  DataFormateur: any = []
-  DataFormationCategorie: any = []
+  DataFormateur: any = [];
   p: number = 1;
   searchText: any;
-  imagePath: any;
   IdUserToDelete: any;
   messagesuccessAdmin: any;
   messageerrorAdmin: any;
   closeSub: Subscription | undefined;
   spinnner: boolean = false;
-  constructor(private DataServiceAdminService: DataServiceAdminService,
-    private notifyService: NotificationService) { }
+  constructor(
+    private DataServiceAdminService: DataServiceAdminService,
+    private notifyService: NotificationService
+  ) {}
 
   ngOnInit(): void {
     this.onload();
   }
 
   onload() {
-    this.DataServiceAdminService.GetAllUsers().subscribe(
+    this.closeSub = this.DataServiceAdminService.GetAllUsers().subscribe(
       (data) => {
-        this.DataFormateur = data
-        this.spinnner = true;
-      }
-    );
-    this.DataServiceAdminService.GetAllFormationCategorie().subscribe((data) => {
-
-      this.DataFormationCategorie = data
-    })
-  }
-
-  RestMessage() {
-
-    this.messagesuccessAdmin = ''
-    this.messageerrorAdmin = ''
-
-  }
-
-  addAdmin(admin: any) {
-    let data = admin.value;
-    this.DataServiceAdminService.AddAdmin(data).subscribe(
-      (data) => {
-        this.ngOnInit();
-        this.messagesuccessAdmin = data;
-        this.notifyService.showSuccess(this.messagesuccessAdmin.message, 'Success');
-        admin.resetForm();
-        this.spinnner = true;
-      },
-      (err: HttpErrorResponse) => {
-        this.messageerrorAdmin = err.error;
-        this.spinnner = true;
-        this.notifyService.showError(this.messageerrorAdmin.message, 'Error');
-      }
-    );
-  }
-
-  addFormateur(formateur: any) {
-    let data = formateur.value;
-    this.DataServiceAdminService.AddFormateur(data).subscribe(
-      (data) => {
-        this.ngOnInit();
-        this.messagesuccessAdmin = data;
-        this.notifyService.showSuccess(this.messagesuccessAdmin.message, 'Success');
-        formateur.resetForm();
-        this.spinnner = true;
-      },
-      (err: HttpErrorResponse) => {
-        this.messageerrorAdmin = err.error;
-        this.notifyService.showError(this.messageerrorAdmin.message, 'Error');
-        this.spinnner = true;
-      }
-    );
-  }
-
-  addEtudiant(etudiant: any) {
-    let data = etudiant.value;
-    this.DataServiceAdminService.AddEtudiant(data).subscribe(
-      (data) => {
-        this.ngOnInit();
-        this.messagesuccessAdmin = data;
-        this.notifyService.showSuccess(this.messagesuccessAdmin.message, 'Success');
-        etudiant.resetForm();
-        this.spinnner = true;
-      },
-      (err: HttpErrorResponse) => {
-        this.messageerrorAdmin = err.error;
-        this.notifyService.showError(this.messageerrorAdmin.message, 'Error');
+        this.DataFormateur = data;
         this.spinnner = true;
       }
     );
@@ -106,10 +41,15 @@ export class GestionutilisateurComponent implements OnInit {
   }
 
   DeleteUser() {
-    this.DataServiceAdminService.DeleteUser(this.IdUserToDelete).subscribe(
+    this.closeSub = this.DataServiceAdminService.DeleteUser(
+      this.IdUserToDelete
+    ).subscribe(
       (response) => {
         this.messagesuccessAdmin = response;
-        this.notifyService.showSuccess(this.messagesuccessAdmin.message, 'Success');
+        this.notifyService.showSuccess(
+          this.messagesuccessAdmin.message,
+          'Success'
+        );
         this.ngOnInit();
         this.spinnner = true;
       },

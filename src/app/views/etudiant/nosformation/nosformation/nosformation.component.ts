@@ -21,7 +21,7 @@ export class NosformationComponent implements OnInit {
   }
 
   GetAllFormation() {
-    this.dataservice.GetAllFormation().subscribe((data) => {
+    this.closeSub= this.dataservice.GetAllFormation().subscribe((data) => {
       this.spinnner = true;
       this.ListFormation = data
     })

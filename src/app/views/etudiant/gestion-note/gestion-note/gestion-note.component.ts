@@ -25,7 +25,7 @@ export class GestionNoteComponent implements OnInit {
 
     this.idUser = localStorage.getItem('tokenid')
 
-    this.dsetudiant.findNoteparEtudaint(this.idUser).subscribe((data) => {
+    this.closeSub=  this.dsetudiant.findNoteparEtudaint(this.idUser).subscribe((data) => {
       this.DataNote = data
       this.spinnner = true;
     })

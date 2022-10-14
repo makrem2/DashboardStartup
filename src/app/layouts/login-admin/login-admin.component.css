@@ -4,3 +4,8 @@
     top: 35px;
     cursor: pointer;
 }
+
+#spinner{
+    margin: auto;
+    display: block;
+}

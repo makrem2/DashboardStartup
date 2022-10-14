@@ -57,20 +57,22 @@ export class DepotdevoirComponent implements OnInit {
   }
 
   onLoad() {
-    this.DataSericeAdmin.GetAllFormation().subscribe(
+    this.closeSub=this.DataSericeAdmin.GetAllFormation().subscribe(
       (data) => (this.ListFormation = data)
     );
 
     this.id = localStorage.getItem('tokenid');
-    this.dataFormateur
+    this.closeSub=this.dataFormateur
       .findDepotDevoirparFormateur(this.id)
-      .subscribe((data) => (this.DataDepotDevoir = data));
+      .subscribe((data) => {
+        this.DataDepotDevoir = data
+        this.spinnner=true
+      });
 
-    this.dataFormateur
+      this.closeSub=this.dataFormateur
       .findDevoirparFormateur(this.id)
       .subscribe((data) => (this.dataDevoir = data));
 
-      this.spinnner=true;
   }
 
   GetPdfFile(pdf: any) {
@@ -81,6 +83,12 @@ export class DepotdevoirComponent implements OnInit {
     const url = URL.createObjectURL(blob);
 
     pdf = window.open(url);
+  }
+
+  ngOnDestroy() {
+    if (this.closeSub) {
+      this.closeSub.unsubscribe();
+    }
   }
 
   GetDevoirId(iddevoir: number, EtudiantId: number) {
@@ -99,7 +107,7 @@ export class DepotdevoirComponent implements OnInit {
     let dataMoyenne = new FormData();
     dataMoyenne.append('idFormation', DN.value.idFormation);
 
-    this.dataFormateur
+    this.closeSub= this.dataFormateur
       .countNoteDevoir(this.EtudiantId, DN.value.iddevoir)
       .subscribe(
         (data) => {
@@ -110,7 +118,7 @@ export class DepotdevoirComponent implements OnInit {
               'Error'
             );
           } else {
-            this.dataFormateur.AddNote(NoteEtudiant).subscribe(
+            this.closeSub= this.dataFormateur.AddNote(NoteEtudiant).subscribe(
               (data) => {
                 this.ngOnInit();
                 this.messageSuccess = data;

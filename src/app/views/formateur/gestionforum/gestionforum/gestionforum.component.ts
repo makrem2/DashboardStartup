@@ -33,8 +33,9 @@ export class GestionforumComponent implements OnInit {
     this.getAllForumQuestions();
   }
 
+
   getAllForumQuestions() {
-    this.DataService.getAllForumQuestions().subscribe(
+    this.closeSub= this.DataService.getAllForumQuestions().subscribe(
       (data) => {
         this.dataQuestion = data
 
@@ -61,7 +62,7 @@ export class GestionforumComponent implements OnInit {
     data.append('timestamp', this.getCurrentTime());
     data.append('iduser', this.userID);
 
-    this.DataService.postQuestion(data).subscribe(
+    this.closeSub = this.DataService.postQuestion(data).subscribe(
       (data) => {
         this.ngOnInit();
         this.messageSuccessPoser = 'Question enregistré avec succès:';
@@ -92,7 +93,7 @@ export class GestionforumComponent implements OnInit {
     data.append('iduser', this.userID);
     data.append('IdQuestion', this.QuestionId);
 
-    this.DataService.postReply(data).subscribe(
+    this.closeSub=this.DataService.postReply(data).subscribe(
       (data) => {
         this.ngOnInit();
         this.messageSuccessReply = 'Réponse enregistré avec succès:';

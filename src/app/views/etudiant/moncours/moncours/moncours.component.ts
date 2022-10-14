@@ -25,7 +25,7 @@ export class MoncoursComponent implements OnInit {
 
   GetFormationByUser() {
     this.UserId = localStorage.getItem('tokenid')
-    this.DataFormateur.GetFormationByUser(this.UserId).subscribe((data) => {
+    this.closeSub =  this.DataFormateur.GetFormationByUser(this.UserId).subscribe((data) => {
       this.ListFormation = data
       this.spinnner = true;
     })
@@ -34,6 +34,12 @@ export class MoncoursComponent implements OnInit {
   SendIdFormation(id: number) {
     //console.log(id)
     this.router.navigate(['etudiant/coursedetails'], { queryParams: { FormationId: id } })
+  }
+
+  ngOnDestroy() {
+    if (this.closeSub) {
+      this.closeSub.unsubscribe();
+    }
   }
 
 }

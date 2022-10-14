@@ -37,7 +37,7 @@ export class UserProfileComponent implements OnInit {
 
   GetUserById() {
     this.userId = localStorage.getItem('tokenid');
-    this.DataServiceAdminService.GetUserById(this.userId).subscribe(
+    this.closeSub= this.DataServiceAdminService.GetUserById(this.userId).subscribe(
       (data) => {
         this.spinnner = true
         this.OneUserData = data
@@ -57,7 +57,7 @@ export class UserProfileComponent implements OnInit {
   updatephoto() {
     let body = new FormData();
     body.append('file', this.images);
-    this.DataServiceAdminService.ModifierPhoto(this.userId, body).subscribe(
+    this.closeSub= this.DataServiceAdminService.ModifierPhoto(this.userId, body).subscribe(
       (response) => {
         this.ngOnInit();
         this.messageSuccess = response;
@@ -71,7 +71,7 @@ export class UserProfileComponent implements OnInit {
   }
   UpdateProfile(up: any) {
     let data = up.value;
-    this.DataServiceAdminService.ModifierProfil(this.userId, data).subscribe(
+    this.closeSub= this.DataServiceAdminService.ModifierProfil(this.userId, data).subscribe(
       (response) => {
         this.ngOnInit();
         this.messageSuccessprofile = response;
@@ -82,5 +82,12 @@ export class UserProfileComponent implements OnInit {
         this.notifyService.showError(this.messageErrorprofile.message, 'Error')
       }
     );
+  }
+
+
+  ngOnDestroy() {
+    if (this.closeSub) {
+      this.closeSub.unsubscribe();
+    }
   }
 }

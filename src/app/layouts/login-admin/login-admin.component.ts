@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthAdminService } from 'src/app/services/auth-admin.service';
 import { NotificationService } from 'src/app/services/notification.service';
 
@@ -18,6 +19,8 @@ export class LoginAdminComponent implements OnInit {
   username: any;
   visible:boolean = true;
   changetype:boolean =true;
+  closeSub: Subscription | undefined;
+  spinnner: boolean = false;
   constructor(
     private authadmin: AuthAdminService,
     private router: Router,
@@ -49,7 +52,7 @@ export class LoginAdminComponent implements OnInit {
 
   loginadmin(f: any) {
     let data = f.value;
-
+    this.spinnner = true;
     //console.log(data)
     this.authadmin.login(data).subscribe(
       (response) => {
@@ -73,11 +76,15 @@ export class LoginAdminComponent implements OnInit {
           this.router.navigate(['/etudiant/dashboard']);
         }
         // this.router.navigate([this.url])
+
+        this.spinnner = false;
+        
       },
       (error) => {
         // console.log(error)
         // this.messageErr = "'Nom d'utilisateur ou Mot de passe est incorrect'";
         this.notifyService.showError("'Nom d'utilisateur ou Mot de passe est incorrect'", 'Error');
+        this.spinnner = false;
       }
     );
   }

@@ -1,3 +1,7 @@
+#spinner {
+    margin: auto;
+    display: block;
+}
 .eyeicon{
     position: absolute;
     right: 20px;

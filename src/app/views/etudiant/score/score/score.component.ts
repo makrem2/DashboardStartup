@@ -23,11 +23,17 @@ export class ScoreComponent implements OnInit {
 
   GetMoyenneParEtudaint() {
     this.EtudiantId = localStorage.getItem('tokenid')
-    this.serviceadmin.GetMoyenneParEtudaint(this.EtudiantId).subscribe((data) => {
+    this.closeSub=  this.serviceadmin.GetMoyenneParEtudaint(this.EtudiantId).subscribe((data) => {
       this.DataMoyenne = data
       this.spinnner = true;
     })
 
+  }
+
+  ngOnDestroy() {
+    if (this.closeSub) {
+      this.closeSub.unsubscribe();
+    }
   }
 
 

@@ -4,11 +4,11 @@ import { Subscription } from 'rxjs';
 import { DataServiceAdminService } from 'src/app/services/data-service-admin.service';
 import { NotificationService } from 'src/app/services/notification.service';
 @Component({
-  selector: 'app-gestion-formations',
-  templateUrl: './gestion-formations.component.html',
-  styleUrls: ['./gestion-formations.component.css'],
+  selector: 'app-ajouterformation',
+  templateUrl: './ajouterformation.component.html',
+  styleUrls: ['./ajouterformation.component.css']
 })
-export class GestionFormationsComponent implements OnInit {
+export class AjouterformationComponent implements OnInit {
   p: number = 1;
   DataFormation: any = [];
   DataFormationCategorie: any = [];
@@ -19,18 +19,7 @@ export class GestionFormationsComponent implements OnInit {
   photo: any;
   role: any;
   searchText: any;
-
-  UpDataFormation = {
-    id: 0,
-    description: '',
-    intitule: '',
-    tags: '',
-    titre: '',
-    categorie_id: 0,
-  };
-  ModfierCategorie: any;
   closeSub: Subscription | undefined;
-  spinnner: boolean = false;
   constructor(private DsAdmin: DataServiceAdminService,
     private notifyService: NotificationService) { }
 
@@ -38,13 +27,12 @@ export class GestionFormationsComponent implements OnInit {
     this.onload();
   }
 
+
   onload() {
     this.role = 'ROLE_Etudiant';
-    this.closeSub = this.DsAdmin.GetAllFormation().subscribe(
-      (data) => { this.DataFormation = data 
-      this.spinnner=true
-      
-      }
+
+    this.closeSub = this.DsAdmin.GetAllEtudiant(this.role).subscribe(
+      (data) => { this.DataUser = data }
     );
 
     this.closeSub = this.DsAdmin.GetAllFormationCategorie().subscribe(
@@ -53,65 +41,35 @@ export class GestionFormationsComponent implements OnInit {
       }
     );
 
-
+    this.closeSub = this.DsAdmin.GetAllFormation().subscribe(
+      (data) => { this.DataFormation = data 
+      
+      }
+    );
   }
+
 
   RestMessage() {
     this.messageSuccess = '';
     this.messageError = '';
   }
 
-
-
-  GetIdFormationToDelete(id: any) {
-    this.idFormationToDelete = id;
-    //console.log(this.idFormationToDelete)
+  selectImage(event: any) {
+    if (event.target.files.length > 0) {
+      const photo = event.target.files[0];
+      this.photo = photo;
+    }
   }
 
-
-
-  DeleteFormation() {
-    this.closeSub=  this.DsAdmin.DeleteFormation(this.idFormationToDelete).subscribe(
-      (response) => {
-        this.messageSuccess = response;
-        this.notifyService.showSuccess(this.messageSuccess.message, 'Success')
-        this.ngOnInit();
-      },
-      (err: HttpErrorResponse) => {
-        this.messageError = err;
-        this.notifyService.showError(this.messageError.message, 'Error')
-      }
-    );
-  }
-
-
-
-  GetdataFormation(
-    id: any,
-    description: any,
-    intitule: any,
-    tags: any,
-    titre: any,
-    categorie_id: any
-  ) {
-    this.UpDataFormation.id = id;
-    this.UpDataFormation.description = description;
-    this.UpDataFormation.intitule = intitule;
-    this.UpDataFormation.tags = tags;
-    this.UpDataFormation.titre = titre;
-    this.UpDataFormation.categorie_id = categorie_id;
-
-    this.ModfierCategorie = this.UpDataFormation.categorie_id;
-  }
-
-  UpdateFormation(f: any) {
+  AddFormation(f: any) {
     let data = new FormData();
+    data.append('photo', this.photo);
     data.append('intitule', f.value.intitule);
     data.append('titre', f.value.titre);
     data.append('idcategorie', f.value.categorie);
     data.append('Description', f.value.Description);
     data.append('tags', f.value.tags);
-    this.closeSub= this.DsAdmin.UpdateFormation(data, this.UpDataFormation.id).subscribe(
+    this.closeSub = this.DsAdmin.AjouterFormation(data).subscribe(
       (response) => {
         this.ngOnInit();
         this.messageSuccess = response;
@@ -125,9 +83,46 @@ export class GestionFormationsComponent implements OnInit {
     );
   }
 
+  Affecter(f: any) {
+    let data = new FormData();
+    data.append('FormationId', f.value.formation);
+
+    this.closeSub= this.DsAdmin.affecterEtudiantAFormation(f.value.etudiant, data).subscribe(
+      (response) => {
+        this.ngOnInit();
+        this.messageSuccess = response;
+        this.notifyService.showSuccess(this.messageSuccess.message, 'Success')
+        f.resetForm();
+      },
+      (err: HttpErrorResponse) => {
+        this.messageError = err;
+        this.notifyService.showError(this.messageError.message, 'Error')
+      }
+    );
+  }
+
+  AddFormationCategorie(c: any) {
+    let data = new FormData();
+    data.append('name', c.value.name);
+
+     this.closeSub =  this.DsAdmin.AjouterFormationCategorie(data).subscribe(
+      (response) => {
+        this.ngOnInit();
+        this.messageSuccess = response;
+        this.notifyService.showSuccess(this.messageSuccess.message, 'Success')
+        c.resetForm();
+      },
+      (err: HttpErrorResponse) => {
+        this.messageError = err;
+        this.notifyService.showError(this.messageError.message, 'Error')
+      }
+    );
+  }
+
   ngOnDestroy() {
     if (this.closeSub) {
       this.closeSub.unsubscribe();
     }
   }
+
 }

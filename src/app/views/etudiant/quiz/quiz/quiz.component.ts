@@ -49,11 +49,19 @@ export class QuizComponent implements OnInit {
     this.username = localStorage.getItem('username');
   }
 
+
+  ngOnDestroy() {
+    if (this.closeSub) {
+      this.closeSub.unsubscribe();
+    }
+  }
+
+
   getAllQuestions() {
-    this.idchapiter =
+  this.idchapiter =
       this.Activatedroute.snapshot.queryParamMap.get('Quiz') || 0;
 
-    this.dataservice.getQuiz(this.idchapiter).subscribe((res) => {
+      this.closeSub =  this.dataservice.getQuiz(this.idchapiter).subscribe((res) => {
       //console.log(res);
       this.questionlist = res;
       this.spinnner=true
@@ -76,7 +84,7 @@ export class QuizComponent implements OnInit {
       Data.append('userid', this.userid);
       Data.append('chapiterId', this.idchapiter);
 
-      this.dataservice.UpdateQuizNote(Data).subscribe(
+      this.closeSub= this.dataservice.UpdateQuizNote(Data).subscribe(
         (data) => {
           this.ngOnInit();
           this.router.navigate(['etudiant/coursedetails'], {
@@ -112,7 +120,7 @@ export class QuizComponent implements OnInit {
   }
 
   startCounter() {
-    this.interval = interval(1000).subscribe((val) => {
+    this.closeSub =  this.interval = interval(1000).subscribe((val) => {
       this.counter--;
       if (this.counter === 0) {
         this.currentQuestion++;
@@ -157,7 +165,7 @@ export class QuizComponent implements OnInit {
     Data.append('userid', this.userid);
     Data.append('chapiterId', this.idchapiter);
 
-    this.dataservice.UpdateQuizNote(Data).subscribe(
+    this.closeSub =  this.dataservice.UpdateQuizNote(Data).subscribe(
       (data) => {
         this.ngOnInit();
         this.router.navigate(['etudiant/coursedetails'], {

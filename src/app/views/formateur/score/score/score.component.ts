@@ -22,9 +22,16 @@ export class ScoreComponent implements OnInit {
 
   }
 
+  
+  ngOnDestroy() {
+    if (this.closeSub) {
+      this.closeSub.unsubscribe();
+    }
+  }
+
   GetMaxMoyenneParFormation(){
     this.specialite = localStorage.getItem('specialite');
-      this.serviceadmin.GetMaxMoyenneParFormation(this.specialite).subscribe((data)=>{
+    this.closeSub =  this.serviceadmin.GetMaxMoyenneParFormation(this.specialite).subscribe((data)=>{
         
         this.DataMoyenne=data
         this.spinnner=true;
